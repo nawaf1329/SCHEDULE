@@ -1,6 +1,3 @@
-**Filename: index.html**
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +6,13 @@
 <title>Schedule Grid</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0e14;--s1:#111520;--s2:#171c2b;--s3:#1e2438;--border:#252d45;--border2:#2e3a58;--accent:#4f8ef7;--accent2:#7c5ce8;--green:#00c98d;--red:#e85c5c;--text:#dde4f5;--sub:#6a7a9e;--muted:#3a4460;--cD:#4f8ef7;--cD-bg:#0f1f3e;--cN:#9b8af0;--cN-bg:#1a1540;--cAL:#f0a030;--cAL-bg:#2a1a04;--cRO:#6a7a9e;--cRO-bg:#141b2e;--cX:#e85c5c;--cX-bg:#2a0f0f}
+:root{
+  --bg:#0b0e14;--s1:#111520;--s2:#171c2b;--s3:#1e2438;--border:#252d45;--border2:#2e3a58;
+  --accent:#4f8ef7;--accent2:#7c5ce8;--green:#00c98d;--red:#e85c5c;--amber:#f0a030;
+  --text:#dde4f5;--sub:#6a7a9e;--muted:#3a4460;--cD:#4f8ef7;--cD-bg:#0f1f3e;--cN:#9b8af0;
+  --cN-bg:#1a1540;--cAL:#f0a030;--cAL-bg:#2a1a04;--cRO:#6a7a9e;--cRO-bg:#141b2e;--cX:#e85c5c;
+  --cX-bg:#2a0f0f;--today:#8ed632;--today-bg:#0f1e04;--today-border:#3a6010;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 nav{position:sticky;top:0;z-index:300;background:rgba(11,14,20,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;height:56px;gap:12px}
@@ -45,7 +48,8 @@ h1 em{font-style:normal;color:var(--accent)}
 .prog-track{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;margin-bottom:8px}
 .prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s}
 .prog-log{font-size:12px;color:var(--sub);font-family:'JetBrains Mono',monospace;min-height:16px}
-.prog-log.ok{color:var(--green)}.prog-log.err{color:var(--red)}
+.prog-log.ok{color:var(--green)}
+.prog-log.err{color:var(--red)}
 .report-header{background:linear-gradient(135deg,#0d1526,#111a30,#0f1620);border-bottom:1px solid var(--border);padding:22px 30px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
 .rh-unit{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:5px;font-family:'JetBrains Mono',monospace}
 .rh-title{font-size:20px;font-weight:700}
@@ -56,37 +60,58 @@ h1 em{font-style:normal;color:var(--accent)}
 .legend-bar{display:flex;gap:10px;flex-wrap:wrap;padding:10px 28px;border-bottom:1px solid var(--border);background:var(--s1);align-items:center}
 .leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub)}
 .leg-chip{padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:700;font-family:'JetBrains Mono',monospace}
-.today-badge{margin-left:auto;font-size:10px;font-family:'JetBrains Mono',monospace;color:#8ed632;background:#0f1e04;border:1px solid #3a6010;border-radius:6px;padding:3px 10px}
+.today-badge{margin-left:auto;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--today);background:var(--today-bg);border:1px solid var(--today-border);border-radius:6px;padding:3px 10px}
 .stats-bar{display:flex;flex-wrap:wrap;background:var(--s1);border-bottom:1px solid var(--border)}
 .stat{padding:12px 22px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:3px}
 .stat-val{font-size:22px;font-weight:700;line-height:1;font-family:'JetBrains Mono',monospace}
 .stat-lbl{font-size:9.5px;color:var(--sub);letter-spacing:1px;text-transform:uppercase}
+.today-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:18px 24px;border-bottom:1px solid var(--border);background:#0d1220}
+.summary-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 14px 12px}
+.summary-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.summary-title{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--sub)}
+.summary-count{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700}
+.summary-list{display:flex;flex-wrap:wrap;gap:6px;min-height:28px}
+.name-tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:var(--s2);border:1px solid var(--border);font-size:11px;color:var(--text)}
+.name-tag.empty{color:var(--muted)}
 #gridWrap{overflow-x:auto;padding-bottom:60px}
 #schedTable{border-collapse:collapse;font-size:11px}
 .th-month{background:#0a111e;color:var(--accent);text-align:center;padding:6px 4px;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--border)}
 .th-dow{background:#070c17;padding:3px 1px;font-size:8.5px;text-align:center;color:var(--muted);min-width:30px;max-width:30px;font-family:'JetBrains Mono',monospace}
 .th-dow.fri,.th-dow.sat{color:#9a6820}
-.th-dow.today-hdr{color:#8ed632 !important;background:#0c1a02 !important}
+.th-dow.today-hdr{color:var(--today)!important;background:#0c1a02!important}
 .th-day{background:#070c17;padding:3px 1px;font-size:10px;font-weight:700;text-align:center;color:#3a4a6e;min-width:30px;max-width:30px;border-bottom:2px solid var(--border);font-family:'JetBrains Mono',monospace}
 .th-day.fri,.th-day.sat{color:#9a6820}
-.th-day.today-hdr{color:#8ed632 !important;background:#0c1a02 !important;border-bottom:2px solid #4a8010 !important}
+.th-day.today-hdr{color:var(--today)!important;background:#0c1a02!important;border-bottom:2px solid #4a8010!important}
 .th-fix{position:sticky;background:var(--s1);z-index:10;padding:5px 9px;font-size:9px;font-weight:600;color:var(--sub);letter-spacing:.5px;text-transform:uppercase;border-right:1px solid var(--border);border-bottom:2px solid var(--border);white-space:nowrap}
-.sec-banner td{padding:5px 14px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7)}
 .td-fix{position:sticky;background:inherit;z-index:5;padding:4px 9px;white-space:nowrap;border-bottom:1px solid #0f1526;border-right:1px solid #151e35;font-size:11.5px}
-.td-num{text-align:center;padding:4px 5px;font-family:'JetBrains Mono',monospace;font-size:11px;border-bottom:1px solid #0f1526;border-right:1px solid #151e35}
 .td-cell{text-align:center;padding:3px 1px;font-size:9.5px;font-weight:700;font-family:'JetBrains Mono',monospace;border-bottom:1px solid #0c1020;min-width:30px;max-width:30px}
 .td-cell.fri,.td-cell.sat{filter:brightness(.7)}
-.td-cell.today-col{background:#162400 !important;outline:1px solid #4a8010;outline-offset:-1px;filter:none !important}
-.role-pill{display:inline-block;padding:1px 7px;border-radius:4px;font-size:9.5px;font-weight:700;font-family:'JetBrains Mono',monospace;background:#1a2240;color:var(--accent)}
-.r-AHN,.r-CI{background:#0d2a24;color:#00c98d}.r-CLN{background:#2a1e08;color:#f0a030}.r-WC{background:#1e1040;color:#c084fc}.r-Defa{background:#182810;color:#84cc16}
-.c-D{background:var(--cD-bg);color:var(--cD)}.c-N{background:var(--cN-bg);color:var(--cN)}.c-AL{background:var(--cAL-bg);color:var(--cAL)}.c-RO{background:var(--cRO-bg);color:var(--cRO)}.c-X{background:var(--cX-bg);color:var(--cX)}.c-{color:#1e2840}
-.sec-Mgmt{background:#062820}.sec-Day{background:#061830}.sec-Night{background:#0e0828}.sec-Other{background:#062016}
-tr.data-row:hover td{filter:brightness(1.22)}
-tr.data-row:hover .td-cell.today-col{filter:brightness(1.22) !important}
+.td-cell.today-col{background:#162400!important;outline:1px solid #4a8010;outline-offset:-1px;filter:none!important}
+.status-pill,.role-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:9.5px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.role-pill{background:#1a2240;color:var(--accent)}
+.role-pill.empty{background:#151c2b;color:var(--muted)}
+.status-pill.c-D{background:var(--cD-bg);color:var(--cD)}
+.status-pill.c-N{background:var(--cN-bg);color:var(--cN)}
+.status-pill.c-AL{background:var(--cAL-bg);color:var(--cAL)}
+.status-pill.c-RO{background:var(--cRO-bg);color:var(--cRO)}
+.status-pill.c-X{background:var(--cX-bg);color:var(--cX)}
+.status-pill.c-blank{background:#151c2b;color:var(--muted)}
+.r-AHN,.r-CI{background:#0d2a24;color:#00c98d}
+.r-CLNSPC{background:#2a1e08;color:#f0a030}
+.r-WC{background:#1e1040;color:#c084fc}
+.r-Default{background:#182810;color:#84cc16}
+.c-D{background:var(--cD-bg);color:var(--cD)}
+.c-N{background:var(--cN-bg);color:var(--cN)}
+.c-AL{background:var(--cAL-bg);color:var(--cAL)}
+.c-RO{background:var(--cRO-bg);color:var(--cRO)}
+.c-X{background:var(--cX-bg);color:var(--cX)}
+.c-blank{color:#1e2840}
+tr.data-row:hover td{filter:brightness(1.18)}
+tr.data-row:hover .td-cell.today-col{filter:brightness(1.18)!important}
+@media (max-width:900px){.today-summary{grid-template-columns:1fr}.stat{min-width:140px}}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-logo"><div class="nav-logo-icon">📅</div>Schedule Grid</div>
   <div class="nav-meta">Unit: <span id="navUnit">—</span></div>
@@ -96,7 +121,7 @@ tr.data-row:hover .td-cell.today-col{filter:brightness(1.22) !important}
 <div class="upload-section" id="uploadSection">
   <div class="eyebrow">Staff Schedule Viewer</div>
   <h1>Paste your schedule,<br>see an <em>instant grid</em></h1>
-  <p class="desc">Upload or paste any schedule text. Who is working today, who is off, who is on leave — all visible at a glance.</p>
+  <p class="desc">Upload or paste schedule text. The parser accepts multiple common text export styles and focuses on one thing: who is working, who is off, and who is on leave.</p>
 
   <div class="drop-zone" id="dzTxt">
     <input type="file" id="txtFile" accept=".txt,.csv,.text" onchange="onTxtFile(this)">
@@ -107,7 +132,7 @@ tr.data-row:hover .td-cell.today-col{filter:brightness(1.22) !important}
   </div>
 
   <div class="paste-label">Or paste schedule text directly:</div>
-  <textarea id="txtArea" placeholder="Paste schedule text here — names, dates, shift codes (D / N / AL / RO / X) in any format"></textarea>
+  <textarea id="txtArea" placeholder="Paste schedule text here — names, dates, shift codes, leave, request off, rest day, or similar text exports."></textarea>
 
   <div class="btn-row">
     <button class="btn btn-primary" id="genBtn" onclick="generate()">⚡ Build Grid</button>
@@ -128,24 +153,27 @@ tr.data-row:hover .td-cell.today-col{filter:brightness(1.22) !important}
       <div class="rh-period-days" id="rhDays"></div>
     </div>
   </div>
+
   <div class="legend-bar">
     <span class="leg"><span class="leg-chip" style="background:var(--cD-bg);color:var(--cD)">D</span>Day</span>
     <span class="leg"><span class="leg-chip" style="background:var(--cN-bg);color:var(--cN)">N</span>Night</span>
     <span class="leg"><span class="leg-chip" style="background:var(--cAL-bg);color:var(--cAL)">AL</span>Annual Leave</span>
-    <span class="leg"><span class="leg-chip" style="background:var(--cRO-bg);color:var(--cRO)">RO</span>Request-Off</span>
-    <span class="leg"><span class="leg-chip" style="background:var(--cX-bg);color:var(--cX)">X</span>Other OFF</span>
+    <span class="leg"><span class="leg-chip" style="background:var(--cRO-bg);color:var(--cRO)">RO</span>Request Off</span>
+    <span class="leg"><span class="leg-chip" style="background:var(--cX-bg);color:var(--cX)">X</span>Off / Rest</span>
     <span class="leg"><span class="leg-chip" style="background:var(--s2);color:var(--muted)">—</span>Blank</span>
     <span class="today-badge" id="todayBadge"></span>
     <button onclick="showUpload()" class="btn btn-ghost" style="padding:5px 14px;font-size:12px">↑ Upload another</button>
   </div>
+
   <div class="stats-bar">
     <div class="stat"><div class="stat-val" id="stEmp">0</div><div class="stat-lbl">Employees</div></div>
     <div class="stat"><div class="stat-val" id="stDays">0</div><div class="stat-lbl">Days</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--cD)" id="stD">0</div><div class="stat-lbl">Day Shifts</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--cN)" id="stN">0</div><div class="stat-lbl">Night Shifts</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--cAL)" id="stAL">0</div><div class="stat-lbl">AL Days</div></div>
-    <div class="stat"><div class="stat-val" style="color:var(--red)" id="stX">0</div><div class="stat-lbl">OFF/REST</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--green)" id="stWork">0</div><div class="stat-lbl">Working Today</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--cAL)" id="stLeave">0</div><div class="stat-lbl">On Leave Today</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--red)" id="stOff">0</div><div class="stat-lbl">Off / Unassigned Today</div></div>
   </div>
+
+  <div class="today-summary" id="todaySummary"></div>
   <div id="gridWrap"></div>
 </div>
 
@@ -153,287 +181,344 @@ tr.data-row:hover .td-cell.today-col{filter:brightness(1.22) !important}
 var TODAY = new Date().toISOString().slice(0,10);
 var txtData = null;
 var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-var SEC_ORDER = ['Mgmt','Day','Night','Other'];
-var SEC_LABEL = {Mgmt:'Management / Admin', Day:'Day Shift', Night:'Night Shift', Other:'Other Roles'};
-var SEC_COLOR = {Mgmt:'#062820', Day:'#061830', Night:'#0e0828', Other:'#062016'};
-var SEC_ACCENT = {Mgmt:'#00c98d', Day:'#4f8ef7', Night:'#9b8af0', Other:'#84cc16'};
 
-/* ── file handling ── */
 var dz = document.getElementById('dzTxt');
-dz.addEventListener('dragover', function(e){e.preventDefault(); dz.classList.add('over');});
-dz.addEventListener('dragleave', function(){dz.classList.remove('over');});
+dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', function(){ dz.classList.remove('over'); });
 dz.addEventListener('drop', function(e){
-  e.preventDefault(); dz.classList.remove('over');
-  var f = e.dataTransfer.files[0]; if(!f) return;
+  e.preventDefault();
+  dz.classList.remove('over');
+  var f = e.dataTransfer.files[0];
+  if (!f) return;
   var fi = document.getElementById('txtFile');
-  var dt = new DataTransfer(); dt.items.add(f); fi.files = dt.files;
+  var dt = new DataTransfer();
+  dt.items.add(f);
+  fi.files = dt.files;
   onTxtFile(fi);
 });
 
 function onTxtFile(input){
-  var f = input.files[0]; if(!f) return;
+  var f = input.files[0];
+  if (!f) return;
   var r = new FileReader();
   r.onload = function(e){
     txtData = e.target.result;
     var b = document.getElementById('txtBadge');
-    b.textContent = '✓ ' + f.name; b.style.display = 'block';
+    b.textContent = '✓ ' + f.name;
+    b.style.display = 'block';
     document.getElementById('txtArea').value = '';
   };
   r.readAsText(f);
 }
 
-/* ── progress ── */
 function prog(pct, msg, cls){
   document.getElementById('progWrap').style.display = 'block';
   document.getElementById('pFill').style.width = pct + '%';
   var el = document.getElementById('pLog');
-  el.textContent = msg; el.className = 'prog-log ' + (cls || '');
+  el.textContent = msg;
+  el.className = 'prog-log ' + (cls || '');
 }
 
-/* ── generate ── */
 function generate(){
   document.getElementById('genBtn').disabled = true;
   try {
     var text = txtData || document.getElementById('txtArea').value.trim();
     if (!text) throw new Error('Please upload a file or paste schedule text.');
-    prog(20, 'Parsing schedule...');
+
+    prog(20, 'Parsing schedule text...');
     var data = parseTXT(text);
-    if (!data.employees.length) throw new Error('No employee records found. Check that your text contains names and date/shift information.');
-    if (!data.start || !data.end) throw new Error('Could not determine the schedule period. Make sure dates are in YYYY-MM-DD format or include a period line.');
+
+    if (!data.employees.length) {
+      throw new Error('Could not read any employee schedule from this file.');
+    }
+    if (!data.start || !data.end) {
+      throw new Error('Could not determine the schedule period from the text.');
+    }
+
     prog(75, 'Building grid for ' + data.employees.length + ' employees...');
     renderAll(data);
     prog(100, '✓ ' + data.employees.length + ' employees · ' + data.start + ' → ' + data.end, 'ok');
-  } catch(err) {
+  } catch (err) {
     prog(0, '✕ ' + err.message, 'err');
     console.error(err);
   }
   document.getElementById('genBtn').disabled = false;
 }
 
-/* ════════════════════════════════════════════
-   FLEXIBLE PARSER — 3 strategies
-   ════════════════════════════════════════════ */
-function parseTXT(text) {
-  var res = {unit:'—', start:null, end:null, employees:[]};
+function parseTXT(text){
+  text = String(text || '').replace(/\r/g, '');
 
-  /* — metadata — */
-  var pm = text.match(/(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
-  if (!pm) pm = text.match(/[Pp]eriod[:\s]+(\d{4}-\d{2}-\d{2})\s*[-–to]+\s*(\d{4}-\d{2}-\d{2})/);
-  if (pm) { res.start = pm[1]; res.end = pm[2]; }
+  var meta = parseMeta(text);
+  var merged = [];
 
-  var um = text.match(/[Uu]nit[:\s]+([^\n|,]+)/);
-  if (um) res.unit = um[1].trim();
+  mergeEmployees(merged, strategyLegacyBlocks(text, meta));
+  mergeEmployees(merged, strategyHospitalBlocks(text, meta));
+  mergeEmployees(merged, strategyLooseBlocks(text, meta));
+  mergeEmployees(merged, strategyTable(text, meta));
 
-  /* — Strategy 1: strict EMPLOYEE: blocks — */
-  res.employees = strategy1(text);
-
-  /* — Strategy 2: flexible name blocks — */
-  if (!res.employees.length) res.employees = strategy2(text);
-
-  /* — Strategy 3: table/column format — */
-  if (!res.employees.length) {
-    var t3 = strategy3(text);
-    res.employees = t3.employees;
-    if (!res.start && t3.start) res.start = t3.start;
-    if (!res.end && t3.end) res.end = t3.end;
-  }
-
-  /* — infer period from collected dates — */
-  if (!res.start || !res.end) {
-    var allDates = [];
-    res.employees.forEach(function(emp){
-      ['D','N','AL','RO','X'].forEach(function(k){ (emp[k]||[]).forEach(function(d){allDates.push(d);}); });
-    });
-    allDates.sort();
-    if (allDates.length) {
-      if (!res.start) res.start = allDates[0];
-      if (!res.end)   res.end   = allDates[allDates.length-1];
-    }
-  }
-
-  return res;
-}
-
-/* ── Strategy 1: original strict format (EMPLOYEE: + ======) ── */
-function strategy1(text){
-  var blocks = text.split(/={3,}/).map(function(b){return b.trim();}).filter(function(b){return /^EMPLOYEE:/i.test(b);});
-  if (!blocks.length) return [];
-  return blocks.map(function(block){
-    return parseStrictBlock(block);
-  }).filter(function(e){return e !== null;});
-}
-
-function parseStrictBlock(block){
-  var lines = block.split('\n');
-  var nm = lines[0].match(/EMPLOYEE:\s*(.+)/i);
-  if (!nm) return null;
-  var ml = lines.find(function(l){return /Skill\/Role:/i.test(l);}) || '';
-  var rm = ml.match(/Skill\/Role:\s*([^|]+)/i);
-  var emp = {name: nm[1].trim(), role: rm ? rm[1].trim() : '', D:[], N:[], AL:[], RO:[], X:[]};
-  var mode = null;
-  lines.forEach(function(line){
-    var t = line.trim();
-    var lc = getCodeFromLabel(t);
-    if (lc !== null) { mode = lc; }
-    if (!t.startsWith('-')) return;
-    var c = t.slice(1).trim(); if (!c || /^none$/i.test(c)) return;
-    if (mode === 'D' || mode === 'N') {
-      c.split('|').forEach(function(s){ var m = s.match(/(\d{4}-\d{2}-\d{2})/); if(m) emp[mode].push(m[1]); });
-    } else if (mode !== null) {
-      var rng = c.match(/(\d{4}-\d{2}-\d{2})[^>]*->\s*(\d{4}-\d{2}-\d{2})/);
-      if (rng) { emp[mode] = emp[mode].concat(drange(rng[1], rng[2])); }
-      else { var dm = c.match(/(\d{4}-\d{2}-\d{2})/g); if(dm) emp[mode] = emp[mode].concat(dm); }
-    }
+  merged.forEach(function(emp){
+    ['D','N','AL','RO','X'].forEach(function(k){ emp[k] = uniqueSorted(emp[k]); });
   });
-  var total = emp.D.length + emp.N.length + emp.AL.length + emp.RO.length + emp.X.length;
-  return total > 0 ? emp : null;
+
+  var period = inferPeriod(merged, meta.start, meta.end);
+
+  return {
+    unit: meta.unit || '—',
+    start: period.start,
+    end: period.end,
+    employees: merged
+  };
 }
 
-/* ── Strategy 2: flexible blocks (any separator or blank lines) ── */
-function strategy2(text){
+function parseMeta(text){
+  var meta = { unit: '—', start: null, end: null };
+  var firstLine = (text.split('\n')[0] || '').trim();
+  var unitLine = firstLine.match(/^(.+?)\s+SCHEDULE\b/i);
+  if (unitLine) meta.unit = unitLine[1].trim();
+
+  var unitMatch = text.match(/[Uu]nit\s*:\s*([^\n|]+)/);
+  if (unitMatch) meta.unit = unitMatch[1].trim();
+
+  var m = text.match(/Period\s*:\s*(\d{2}\/\d{2}\/\d{4})\s*[-–]\s*(\d{2}\/\d{2}\/\d{4})/i);
+  if (!m) m = text.match(/Source\s+period\s*:\s*(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/i);
+  if (!m) m = text.match(/[Pp]eriod\s*:\s*(\d{4}-\d{2}-\d{2})\s*(?:to|[-–])\s*(\d{4}-\d{2}-\d{2})/);
+
+  if (m) {
+    meta.start = toISO(m[1], null, null);
+    meta.end = toISO(m[2], meta.start, meta.start);
+  }
+
+  return meta;
+}
+
+function strategyLegacyBlocks(text, meta){
+  var blocks = text.split(/={3,}/).map(function(b){ return b.trim(); }).filter(function(b){ return /^EMPLOYEE:/i.test(b); });
+  if (!blocks.length) return [];
+
+  return blocks.map(function(block){
+    var lines = block.split('\n');
+    var nm = lines[0].match(/EMPLOYEE\s*:\s*(.+)/i);
+    if (!nm) return null;
+
+    var role = '';
+    var roleLine = lines.find(function(l){ return /Skill\/Role:/i.test(l); }) || '';
+    var roleMatch = roleLine.match(/Skill\/Role\s*:\s*([^|]+)/i);
+    if (roleMatch) role = roleMatch[1].trim();
+
+    var emp = makeEmployee(cleanName(nm[1]), role);
+    var extracted = extractLegacyDates(block, meta);
+    applyExtracted(emp, extracted);
+    return extracted.rowsFound ? emp : null;
+  }).filter(Boolean);
+}
+
+function strategyHospitalBlocks(text, meta){
+  var sections = text.split(/\n={6,}\n/).map(function(s){ return s.trim(); }).filter(Boolean);
+  if (sections.length < 3) return [];
+
   var employees = [];
-  /* Split by separator lines OR double blank lines */
-  var sections = text.split(/(?:={2,}|-{3,}|\*{3,}|_{3,}|\n{2,})/);
+  for (var i = 1; i < sections.length; i += 2) {
+    var header = sections[i] || '';
+    var body = sections[i + 1] || '';
+    if (!body) continue;
+
+    var head = parseHeader(header);
+    if (!head) continue;
+
+    var roleMatch = body.match(/^Skill\s*:\s*(.+)$/im);
+    var role = roleMatch ? roleMatch[1].trim() : head.role;
+    var emp = makeEmployee(head.name, role);
+
+    var extracted = extractDailyRows(body, meta);
+    if (!extracted.rowsFound) extracted = extractLegacyDates(body, meta);
+    if (!extracted.rowsFound) continue;
+
+    applyExtracted(emp, extracted);
+    employees.push(emp);
+  }
+  return employees;
+}
+
+function strategyLooseBlocks(text, meta){
+  var sections = text.split(/(?:\n{2,}|={3,}|-{3,}|_{3,}|\*{3,})/).map(function(s){ return s.trim(); }).filter(Boolean);
+  var employees = [];
 
   sections.forEach(function(section){
-    section = section.trim();
-    if (section.length < 5) return;
-    var lines = section.split('\n').map(function(l){return l.trim();}).filter(function(l){return l.length > 0;});
+    if (section.length < 20) return;
+    var lines = section.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
     if (lines.length < 2) return;
 
-    /* Find name — first line that looks like a name */
-    var name = null, role = null, nameIdx = -1;
+    var name = '';
+    var role = '';
+    var bodyStart = 0;
+
     for (var i = 0; i < Math.min(lines.length, 6); i++) {
       var line = lines[i];
-      /* Skip obvious metadata lines */
-      if (/^(source|unit:|schedule|period|date|note|total|page|section|report)/i.test(line)) continue;
-      /* Skip lines that are mostly dates */
-      if ((line.match(/\d{4}-\d{2}-\d{2}/g) || []).length >= 2) continue;
-      /* Check for EMPLOYEE: / Name: / Staff: label */
-      var labeled = line.match(/^(?:EMPLOYEE|Name|Staff|Person)[:\s]+(.+)/i);
-      if (labeled) {
-        name = cleanName(labeled[1]);
-        role = extractRoleFromLine(labeled[1]);
-        nameIdx = i;
-        /* Look for role on next line */
-        if (!role && i+1 < lines.length) {
-          var rl = lines[i+1].match(/(?:Skill|Role|Position)[:\s]+([^\|]+)/i);
-          if (rl) { role = rl[1].trim(); nameIdx = i+1; }
-        }
+      var head = parseHeader(line);
+      if (head) {
+        name = head.name;
+        role = head.role || '';
+        bodyStart = i + 1;
         break;
       }
-      /* Plain name line */
+
+      var labeled = line.match(/^(?:EMPLOYEE|NAME|STAFF|PERSON)\s*[:\-]\s*(.+)$/i);
+      if (labeled) {
+        name = cleanName(labeled[1]);
+        role = extractRoleFromNameLine(labeled[1]);
+        bodyStart = i + 1;
+        break;
+      }
+
       if (looksLikeName(line)) {
         name = cleanName(line);
-        role = extractRoleFromLine(line);
-        nameIdx = i;
+        role = extractRoleFromNameLine(line);
+        bodyStart = i + 1;
         break;
       }
     }
 
-    if (!name || name.length < 2) return;
+    if (!name) return;
 
-    /* Extract dates and codes from remaining lines */
-    var dateMap = {};
-    var body = lines.slice(nameIdx + 1).join('\n');
-    extractDateCodes(body, dateMap);
+    var roleLine = lines.find(function(l){ return /^Skill\s*:|^Role\s*:|^Position\s*:/i.test(l); });
+    if (roleLine) role = roleLine.split(':').slice(1).join(':').trim() || role;
 
-    if (Object.keys(dateMap).length === 0) return;
+    var body = lines.slice(bodyStart).join('\n');
+    var extracted = extractDailyRows(body, meta);
+    if (!extracted.rowsFound) extracted = extractLegacyDates(body, meta);
+    if (!extracted.rowsFound) return;
 
-    var emp = {name: name, role: role || '', D:[], N:[], AL:[], RO:[], X:[]};
-    Object.keys(dateMap).forEach(function(date){
-      var code = dateMap[date];
-      if (emp[code] !== undefined) emp[code].push(date);
-    });
+    var emp = makeEmployee(name, role);
+    applyExtracted(emp, extracted);
     employees.push(emp);
   });
 
   return employees;
 }
 
-/* ── Strategy 3: table format (date columns) ── */
-function strategy3(text){
-  var result = {employees:[], start:null, end:null};
-  var lines = text.split('\n').map(function(l){return l.trim();}).filter(function(l){return l.length > 0;});
+function strategyTable(text, meta){
+  var lines = text.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+  var result = [];
+  var headerDates = [];
+  var headerIndex = -1;
 
-  /* Find a header row with 3+ ISO dates */
-  var headerIdx = -1, headerDates = [];
   for (var i = 0; i < lines.length; i++) {
-    var dates = lines[i].match(/\d{4}-\d{2}-\d{2}/g) || [];
-    if (dates.length >= 3) { headerIdx = i; headerDates = dates; break; }
-  }
-  if (headerIdx === -1) return result;
-
-  if (headerDates.length) {
-    headerDates.sort();
-    result.start = headerDates[0];
-    result.end   = headerDates[headerDates.length-1];
-  }
-
-  /* Parse each subsequent row */
-  for (var j = headerIdx+1; j < lines.length; j++) {
-    var row = lines[j];
-    if (!row.trim()) continue;
-    var cells = row.includes('|') ? row.split('|').map(function(c){return c.trim();}) : row.split(/\s{2,}|\t/).map(function(c){return c.trim();});
-    if (cells.length < 2) continue;
-
-    var nameCell = cells[0];
-    if (!looksLikeName(nameCell)) continue;
-
-    var emp = {name: nameCell.trim(), role: '', D:[], N:[], AL:[], RO:[], X:[]};
-    for (var k = 0; k < headerDates.length; k++) {
-      var raw = (cells[k+1] || '').trim().toUpperCase();
-      if (!raw || raw === '-' || raw === '') continue;
-      var code = normalizeCode(raw);
-      if (code && emp[code] !== undefined) emp[code].push(headerDates[k]);
+    var dates = lines[i].match(/\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}|\d{2}\/\d{2}/g) || [];
+    if (dates.length >= 3) {
+      headerDates = dates.map(function(d){ return toISO(d, meta.start, meta.end); }).filter(Boolean);
+      if (headerDates.length >= 3) {
+        headerIndex = i;
+        break;
+      }
     }
-    var total = emp.D.length + emp.N.length + emp.AL.length + emp.RO.length + emp.X.length;
-    if (total > 0) result.employees.push(emp);
+  }
+
+  if (headerIndex === -1) return result;
+
+  for (var j = headerIndex + 1; j < lines.length; j++) {
+    var row = lines[j];
+    var cells = row.includes('|') ? row.split('|') : row.split(/\t|\s{2,}/);
+    cells = cells.map(function(c){ return c.trim(); }).filter(function(c){ return c.length; });
+    if (cells.length < 2) continue;
+    if (!looksLikeName(cells[0])) continue;
+
+    var emp = makeEmployee(cleanName(cells[0]), '');
+    var rowsFound = false;
+    for (var k = 0; k < headerDates.length; k++) {
+      var raw = cells[k + 1] || '';
+      var code = mapStatusToCode(raw);
+      if (raw) rowsFound = true;
+      if (code) emp[code].push(headerDates[k]);
+    }
+    if (rowsFound) result.push(emp);
   }
 
   return result;
 }
 
-/* ════════════ PARSER HELPERS ════════════ */
+function parseHeader(header){
+  header = (header || '').trim();
+  if (!header) return null;
+  if (/^EMPLOYEE INDEX$/i.test(header)) return null;
 
-function extractDateCodes(text, dateMap){
-  var lines = text.split('\n');
-  var currentCode = null;
+  var quick = header.match(/^QUICK SECTION\s*-\s*(.+)$/i);
+  if (quick) return { name: cleanName(quick[1]), role: '' };
 
-  lines.forEach(function(line){
-    line = line.trim();
-    if (!line) return;
+  var numbered = header.match(/^\d+\.\s+(.+?)(?:\s+\[([^\]]+)\])?$/);
+  if (numbered) return { name: cleanName(numbered[1]), role: (numbered[2] || '').trim() };
 
-    /* Detect section label → sets mode for following dates */
-    var lc = getCodeFromLabel(line);
-    if (lc !== null) currentCode = lc;
+  if (looksLikeName(header)) return { name: cleanName(header), role: extractRoleFromNameLine(header) };
+  return null;
+}
 
-    /* Date ranges: YYYY-MM-DD -> YYYY-MM-DD (with optional label context) */
-    var rangeRe = /(\d{4}-\d{2}-\d{2})(?:\s*\([^)]*\))?\s*(?:->|–>|to|-)\s*(\d{4}-\d{2}-\d{2})/g;
-    var rm;
-    while ((rm = rangeRe.exec(line)) !== null) {
-      var code = getInlineCode(line, rm.index) || lc || currentCode || 'X';
-      drange(rm[1], rm[2]).forEach(function(d){ if(!dateMap[d]) dateMap[d] = code; });
-    }
-
-    /* Individual dates: YYYY-MM-DD optionally followed by 1-2 char code */
-    var dateRe = /(\d{4}-\d{2}-\d{2})(?:\s*\([^)]*\))?\s*([DNALROX]{1,2})?/g;
-    var dm;
-    while ((dm = dateRe.exec(line)) !== null) {
-      var date = dm[1];
-      if (dateMap[date] !== undefined) continue; /* already set by range */
-      var code2 = null;
-      if (dm[2]) {
-        code2 = normalizeCode(dm[2]);
-      }
-      if (!code2) code2 = getInlineCode(line, dm.index) || lc || currentCode;
-      if (code2) dateMap[date] = code2;
-    }
+function extractDailyRows(body, meta){
+  var extracted = emptyExtracted();
+  body.split('\n').forEach(function(line){
+    var parsed = parseDailyLine(line, meta.start, meta.end);
+    if (!parsed) return;
+    extracted.rowsFound = true;
+    if (parsed.code) extracted[parsed.code].push(parsed.date);
   });
+  return extracted;
+}
+
+function parseDailyLine(line, startISO, endISO){
+  line = (line || '').trim();
+  if (!line) return null;
+
+  var m = line.match(/^((?:\d{4}-\d{2}-\d{2})|(?:\d{2}\/\d{2}(?:\/\d{4})?))(?:\s+[A-Za-z]{3})?\s*:\s*(.+)$/);
+  if (!m) return null;
+
+  var iso = toISO(m[1], startISO, endISO);
+  if (!iso) return null;
+
+  return {
+    date: iso,
+    code: mapStatusToCode(m[2])
+  };
+}
+
+function extractLegacyDates(body, meta){
+  var extracted = emptyExtracted();
+  var mode = null;
+  var DATE_RE = /\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}|\d{2}\/\d{2}/g;
+
+  body.split('\n').forEach(function(line){
+    var t = line.trim();
+    var lc = getCodeFromLabel(t);
+    if (lc !== null) mode = lc;
+
+    if (!/^[-•*]/.test(t)) return;
+    var content = t.replace(/^[-•*]\s*/, '').trim();
+    if (!content) return;
+
+    var range = content.match(/(\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}(?:\/\d{4})?)\s*(?:->|to|[-–])\s*(\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}(?:\/\d{4})?)/i);
+    if (range) {
+      var start = toISO(range[1], meta.start, meta.end);
+      var end = toISO(range[2], meta.start, meta.end);
+      if (start && end) {
+        extracted.rowsFound = true;
+        expandRange(start, end).forEach(function(d){
+          if (mode) extracted[mode].push(d);
+        });
+      }
+      return;
+    }
+
+    var dates = content.match(DATE_RE) || [];
+    if (!dates.length) return;
+    extracted.rowsFound = true;
+    dates.forEach(function(d){
+      var iso = toISO(d, meta.start, meta.end);
+      if (iso && mode) extracted[mode].push(iso);
+    });
+  });
+
+  return extracted;
 }
 
 function getCodeFromLabel(line){
-  var l = line.replace(/^[-•*]\s*/, ''); /* strip bullet */
+  var l = line.replace(/^[-•*]\s*/, '');
   if (/^day\s*shift\s*dates?[:\s]/i.test(l) || /^day\s*shifts?[:\s]/i.test(l) || /^d\s*:/i.test(l)) return 'D';
   if (/^night\s*shift\s*dates?[:\s]/i.test(l) || /^night\s*shifts?[:\s]/i.test(l) || /^n\s*:/i.test(l)) return 'N';
   if (/^annual\s*leave[:\s]/i.test(l) || /^leave[:\s]/i.test(l) || /^al[:\s]/i.test(l)) return 'AL';
@@ -442,226 +527,403 @@ function getCodeFromLabel(line){
   return null;
 }
 
-function getInlineCode(line, pos){
-  var before = line.slice(Math.max(0, pos-30), pos).toLowerCase();
-  var after  = line.slice(pos, Math.min(line.length, pos+50)).toLowerCase();
-  var ctx = before + ' ' + after;
-  if (/annual\s*leave|leave/.test(ctx)) return 'AL';
-  if (/request.?off/.test(ctx)) return 'RO';
-  if (/night/.test(before)) return 'N';
-  if (/day/.test(before)) return 'D';
-  if (/\boff\b|\brest\b/.test(ctx)) return 'X';
-  return null;
-}
+function mapStatusToCode(raw){
+  var s = String(raw || '').trim().toUpperCase().replace(/\s+/g, ' ');
+  if (!s || s === '-' || s === '—') return '';
 
-function normalizeCode(code){
-  code = (code || '').trim().toUpperCase();
-  if (code === 'D')  return 'D';
-  if (code === 'N')  return 'N';
-  if (code === 'AL') return 'AL';
-  if (code === 'RO') return 'RO';
-  if (code === 'X' || code === 'OF' || code === 'OFF' || code === 'RS' || code === 'REST') return 'X';
-  return null;
-}
+  if (/REQUEST\s*OFF|REQ(?:UEST)?\s*OFF|\bR\/?O\b/.test(s)) return 'RO';
+  if (/ANNUAL|VACATION|\bLEAVE\b/.test(s)) return 'AL';
+  if (/REST DAY|DAY OFF|\bOFF\b|\bREST\b/.test(s)) return 'X';
+  if (/^N\b|\bNIGHT\b/.test(s)) return 'N';
+  if (/^D\b|\bDAY\b/.test(s)) return 'D';
+  if (/EDU|TRAIN|WORKSHOP|SEMINAR|ORIENT|CLASS|LECTURE|MEETING/.test(s)) return 'D';
 
-function looksLikeName(str){
-  str = str.trim();
-  if (str.length < 3 || str.length > 65) return false;
-  if (/^(source|unit|schedule|period|date|note|total|page|section|report|shift|leave|request|off|rest|annual|night|day)/i.test(str)) return false;
-  if (!/[a-zA-Z]/.test(str)) return false;
-  var digits = (str.match(/\d/g) || []).length;
-  if (digits > str.length * 0.25) return false;
-  var specials = (str.match(/[^a-zA-Z\s,.\-']/g) || []).length;
-  if (specials > 3) return false;
-  if (!/[A-Z]/.test(str)) return false;
-  var words = str.split(/[\s,]+/).filter(function(w){return w.length > 0;});
-  return words.length >= 2;
-}
-
-function cleanName(str){
-  /* Remove trailing role codes or pipe-separated fields */
-  return str.replace(/\s*\|.*$/, '').replace(/\s*[-–]\s*[A-Z]{2,5}$/, '').replace(/\s*\([A-Z\s]+\)$/, '').trim();
-}
-
-function extractRoleFromLine(str){
-  /* Look for role code at end of name line: "Smith, John | SN I" or "Smith, John - AHN" */
-  var m = str.match(/[|\-–]\s*([A-Za-z\s]+)$/);
-  if (m) {
-    var candidate = m[1].trim();
-    if (candidate.length <= 10 && /[A-Za-z]/.test(candidate)) return candidate;
-  }
   return '';
 }
 
-/* ════════════ DATE HELPERS ════════════ */
-function drange(from, to){
-  var res = [], s = new Date(from+'T00:00:00'), e = new Date(to+'T00:00:00');
-  for (var d = new Date(s); d <= e; d.setDate(d.getDate()+1))
-    res.push(d.toISOString().slice(0,10));
+function makeEmployee(name, role){
+  return { name: cleanName(name), role: (role || '').trim(), D: [], N: [], AL: [], RO: [], X: [] };
+}
+
+function emptyExtracted(){
+  return { rowsFound: false, D: [], N: [], AL: [], RO: [], X: [] };
+}
+
+function applyExtracted(emp, extracted){
+  ['D','N','AL','RO','X'].forEach(function(k){ emp[k] = emp[k].concat(extracted[k]); });
+}
+
+function mergeEmployees(target, incoming){
+  incoming.forEach(function(emp){
+    if (!emp || !emp.name) return;
+    var key = emp.name.toUpperCase();
+    var existing = target.find(function(e){ return e.name.toUpperCase() === key; });
+    if (!existing) {
+      target.push({
+        name: emp.name,
+        role: emp.role || '',
+        D: uniqueSorted(emp.D || []),
+        N: uniqueSorted(emp.N || []),
+        AL: uniqueSorted(emp.AL || []),
+        RO: uniqueSorted(emp.RO || []),
+        X: uniqueSorted(emp.X || [])
+      });
+      return;
+    }
+
+    if (!existing.role && emp.role) existing.role = emp.role;
+    ['D','N','AL','RO','X'].forEach(function(k){
+      existing[k] = uniqueSorted(existing[k].concat(emp[k] || []));
+    });
+  });
+}
+
+function inferPeriod(employees, start, end){
+  var allDates = [];
+  employees.forEach(function(emp){
+    ['D','N','AL','RO','X'].forEach(function(k){
+      (emp[k] || []).forEach(function(d){ allDates.push(d); });
+    });
+  });
+  allDates = uniqueSorted(allDates);
+  return {
+    start: start || (allDates[0] || null),
+    end: end || (allDates[allDates.length - 1] || null)
+  };
+}
+
+function uniqueSorted(arr){
+  return Array.from(new Set((arr || []).filter(Boolean))).sort();
+}
+
+function cleanName(str){
+  return String(str || '')
+    .replace(/^\d+\.\s+/, '')
+    .replace(/^QUICK SECTION\s*-\s*/i, '')
+    .replace(/\s*\[[^\]]+\]\s*$/, '')
+    .replace(/\s*\|.*$/, '')
+    .replace(/\s*[-–]\s*[A-Z][A-Z\s]{1,10}$/, '')
+    .trim();
+}
+
+function extractRoleFromNameLine(str){
+  var bracket = String(str || '').match(/\[([^\]]+)\]\s*$/);
+  if (bracket) return bracket[1].trim();
+  var m = String(str || '').match(/[|\-–]\s*([A-Za-z][A-Za-z\s]{1,10})$/);
+  if (m) return m[1].trim();
+  return '';
+}
+
+function looksLikeName(str){
+  str = String(str || '').trim();
+  if (str.length < 3 || str.length > 80) return false;
+  if (/^(source|unit|schedule|period|date|note|total|page|section|report|shift|leave|request|off|rest|annual|night|day|employee index)/i.test(str)) return false;
+  if (!/[A-Za-z]/.test(str)) return false;
+  var digits = (str.match(/\d/g) || []).length;
+  if (digits > str.length * 0.35) return false;
+  var words = str.split(/[\s,]+/).filter(Boolean);
+  return words.length >= 2;
+}
+
+function toISO(raw, startISO, endISO){
+  raw = String(raw || '').trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+
+  var us = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (us) return us[3] + '-' + us[1] + '-' + us[2];
+
+  var shortUs = raw.match(/^(\d{2})\/(\d{2})$/);
+  if (shortUs) {
+    var year = inferYear(shortUs[1], startISO, endISO);
+    return year + '-' + shortUs[1] + '-' + shortUs[2];
+  }
+
+  return null;
+}
+
+function inferYear(month, startISO, endISO){
+  var startYear = startISO ? parseInt(startISO.slice(0, 4), 10) : new Date().getFullYear();
+  var endYear = endISO ? parseInt(endISO.slice(0, 4), 10) : startYear;
+  var startMonth = startISO ? parseInt(startISO.slice(5, 7), 10) : 1;
+  var m = parseInt(month, 10);
+  if (startYear !== endYear && m < startMonth) return endYear;
+  return startYear;
+}
+
+function expandRange(startISO, endISO){
+  var res = [];
+  var start = new Date(startISO + 'T00:00:00');
+  var end = new Date(endISO + 'T00:00:00');
+  for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    res.push(d.toISOString().slice(0, 10));
+  }
   return res;
 }
-function buildDates(s, e){
-  var res = [], sd = new Date(s+'T00:00:00'), ed = new Date(e+'T00:00:00');
-  for (var d = new Date(sd); d <= ed; d.setDate(d.getDate()+1))
+
+function buildDates(startISO, endISO){
+  var res = [];
+  var start = new Date(startISO + 'T00:00:00');
+  var end = new Date(endISO + 'T00:00:00');
+  for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
     res.push(new Date(d));
+  }
   return res;
 }
 
-/* ════════════ CLASSIFY ════════════ */
-function classify(emp){
-  var r = emp.role.toUpperCase().trim();
-  if (['AHN','CI'].indexOf(r) !== -1) return 'Mgmt';
-  if (['CLN','WC','DEFA'].indexOf(r) !== -1) return 'Other';
-  if (r === 'DEFA') return 'Other';
-  return emp.N.length > emp.D.length ? 'Night' : 'Day';
+function todayStatusPriority(code){
+  if (code === 'D') return 0;
+  if (code === 'N') return 1;
+  if (code === 'AL') return 2;
+  if (code === 'RO') return 3;
+  if (code === 'X') return 4;
+  return 5;
 }
 
-/* ════════════ RENDER ════════════ */
+function getTodayStatus(emp){
+  return emp._map[TODAY] || '';
+}
+
+function getStatusLabel(code){
+  if (code === 'D') return 'D';
+  if (code === 'N') return 'N';
+  if (code === 'AL') return 'AL';
+  if (code === 'RO') return 'RO';
+  if (code === 'X') return 'X';
+  return '—';
+}
+
+function getStatusPillClass(code){
+  return code ? 'c-' + code : 'c-blank';
+}
+
+function roleClass(role){
+  var safe = String(role || '').replace(/[^A-Za-z0-9]/g, '');
+  return safe ? 'r-' + safe : '';
+}
+
 function renderAll(data){
-  var s = data.start, e = data.end;
-  var allDates = buildDates(s, e);
-
-  document.getElementById('navUnit').textContent    = data.unit;
-  document.getElementById('navPeriod').textContent  = s + ' → ' + e;
-  document.getElementById('rhUnit').textContent     = 'Unit ' + data.unit;
-  document.getElementById('rhPeriod').textContent   = s + ' → ' + e;
-  document.getElementById('rhDays').textContent     = allDates.length + ' calendar days';
-
-  /* today badge */
-  var todayInRange = allDates.some(function(d){return d.toISOString().slice(0,10) === TODAY;});
-  var tb = document.getElementById('todayBadge');
-  tb.textContent = todayInRange ? '▶ Today: ' + TODAY : 'Today: ' + TODAY + ' (outside range)';
+  var allDates = buildDates(data.start, data.end);
 
   data.employees.forEach(function(emp){
-    emp._sec = classify(emp); emp._map = {};
-    ['D','N','AL','RO','X'].forEach(function(k){ (emp[k]||[]).forEach(function(d){ emp._map[d]=k; }); });
+    emp._map = {};
+    ['D','N','AL','RO','X'].forEach(function(k){
+      (emp[k] || []).forEach(function(d){ emp._map[d] = k; });
+    });
   });
 
-  var td=0,tn=0,ta=0,tx=0;
-  data.employees.forEach(function(emp){ td+=emp.D.length; tn+=emp.N.length; ta+=emp.AL.length; tx+=emp.X.length; });
-  document.getElementById('stEmp').textContent  = data.employees.length;
-  document.getElementById('stDays').textContent = allDates.length;
-  document.getElementById('stD').textContent    = td;
-  document.getElementById('stN').textContent    = tn;
-  document.getElementById('stAL').textContent   = ta;
-  document.getElementById('stX').textContent    = tx;
+  data.employees.sort(function(a, b){
+    var pa = todayStatusPriority(getTodayStatus(a));
+    var pb = todayStatusPriority(getTodayStatus(b));
+    if (pa !== pb) return pa - pb;
+    return a.name.localeCompare(b.name);
+  });
 
-  /* month groups */
+  document.getElementById('navUnit').textContent = data.unit;
+  document.getElementById('navPeriod').textContent = data.start + ' → ' + data.end;
+  document.getElementById('rhUnit').textContent = 'Unit ' + data.unit;
+  document.getElementById('rhPeriod').textContent = data.start + ' → ' + data.end;
+  document.getElementById('rhDays').textContent = allDates.length + ' calendar days';
+
+  var todayInRange = allDates.some(function(d){ return d.toISOString().slice(0, 10) === TODAY; });
+  document.getElementById('todayBadge').textContent = todayInRange ? '▶ Today: ' + TODAY : 'Today: ' + TODAY + ' (outside range)';
+
+  renderTodaySummary(data, todayInRange);
+
+  document.getElementById('stEmp').textContent = data.employees.length;
+  document.getElementById('stDays').textContent = allDates.length;
+
+  var workingToday = 0;
+  var leaveToday = 0;
+  var offToday = 0;
+
+  data.employees.forEach(function(emp){
+    var code = getTodayStatus(emp);
+    if (code === 'D' || code === 'N') workingToday++;
+    else if (code === 'AL') leaveToday++;
+    else offToday++;
+  });
+
+  document.getElementById('stWork').textContent = workingToday;
+  document.getElementById('stLeave').textContent = leaveToday;
+  document.getElementById('stOff').textContent = offToday;
+
   var monthGroups = {};
   allDates.forEach(function(d){
-    var mk = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    var mk = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
     if (!monthGroups[mk]) monthGroups[mk] = [];
     monthGroups[mk].push(d);
   });
 
-  var table = document.createElement('table'); table.id = 'schedTable';
+  var table = document.createElement('table');
+  table.id = 'schedTable';
   var thead = document.createElement('thead');
 
-  /* fixed col specs */
-  var fixCols = [['#',32],['Name',170],['Role',56],['D',34],['N',34],['AL',34]];
-  var fixLeft  = [0, 32, 202, 258, 292, 326];
+  var fixCols = [['#', 36], ['Name', 220], ['Role', 82], ['Today', 70]];
+  var fixLeft = [0, 36, 256, 338];
 
-  /* row 1: fixed headers (rowspan 3) + month headers */
   var r1 = document.createElement('tr');
-  fixCols.forEach(function(fc,i){
-    var th = document.createElement('th'); th.rowSpan=3; th.textContent=fc[0]; th.className='th-fix';
-    th.style.cssText = 'left:'+fixLeft[i]+'px;min-width:'+fc[1]+'px;text-align:'+(fc[0]==='Name'?'left':'center')+';'+(i===5?'border-right:2px solid #3a4a6a':'');
+  fixCols.forEach(function(fc, i){
+    var th = document.createElement('th');
+    th.rowSpan = 3;
+    th.textContent = fc[0];
+    th.className = 'th-fix';
+    th.style.cssText = 'left:' + fixLeft[i] + 'px;min-width:' + fc[1] + 'px;text-align:' + (fc[0] === 'Name' ? 'left' : 'center') + ';' + (i === fixCols.length - 1 ? 'border-right:2px solid #3a4a6a' : '');
     r1.appendChild(th);
   });
-  var mkeys = Object.keys(monthGroups);
-  mkeys.forEach(function(mk,mi){
-    var th = document.createElement('th'); th.colSpan=monthGroups[mk].length; th.className='th-month';
-    th.textContent = new Date(monthGroups[mk][0]).toLocaleString('en',{month:'long'}).toUpperCase()+' '+mk.slice(0,4);
-    if (mi < mkeys.length-1) th.style.borderRight = '2px solid #2a3a5a';
+
+  Object.keys(monthGroups).forEach(function(mk, idx, arr){
+    var th = document.createElement('th');
+    th.colSpan = monthGroups[mk].length;
+    th.className = 'th-month';
+    th.textContent = new Date(monthGroups[mk][0]).toLocaleString('en', { month: 'long' }).toUpperCase() + ' ' + mk.slice(0, 4);
+    if (idx < arr.length - 1) th.style.borderRight = '2px solid #2a3a5a';
     r1.appendChild(th);
   });
   thead.appendChild(r1);
 
-  /* row 2: day-of-week */
   var r2 = document.createElement('tr');
-  allDates.forEach(function(d,i){
-    var th = document.createElement('th'); var dw = d.getDay();
-    var key = d.toISOString().slice(0,10);
-    th.textContent = DOW[dw].slice(0,3);
-    th.className = 'th-dow'+(dw===5?' fri':dw===6?' sat':'')+(key===TODAY?' today-hdr':'');
-    if (i<allDates.length-1 && allDates[i+1].getMonth()!==d.getMonth()) th.style.borderRight='2px solid #2a3a5a';
+  allDates.forEach(function(d, i){
+    var key = d.toISOString().slice(0, 10);
+    var dw = d.getDay();
+    var th = document.createElement('th');
+    th.textContent = DOW[dw].slice(0, 3);
+    th.className = 'th-dow' + (dw === 5 ? ' fri' : dw === 6 ? ' sat' : '') + (key === TODAY ? ' today-hdr' : '');
+    if (i < allDates.length - 1 && allDates[i + 1].getMonth() !== d.getMonth()) th.style.borderRight = '2px solid #2a3a5a';
     r2.appendChild(th);
   });
   thead.appendChild(r2);
 
-  /* row 3: date numbers */
   var r3 = document.createElement('tr');
-  allDates.forEach(function(d,i){
-    var th = document.createElement('th'); var dw = d.getDay();
-    var key = d.toISOString().slice(0,10);
+  allDates.forEach(function(d, i){
+    var key = d.toISOString().slice(0, 10);
+    var dw = d.getDay();
+    var th = document.createElement('th');
     th.textContent = d.getDate();
-    th.className = 'th-day'+(dw===5?' fri':dw===6?' sat':'')+(key===TODAY?' today-hdr':'');
-    if (i<allDates.length-1 && allDates[i+1].getMonth()!==d.getMonth()) th.style.borderRight='2px solid #2a3a5a';
+    th.className = 'th-day' + (dw === 5 ? ' fri' : dw === 6 ? ' sat' : '') + (key === TODAY ? ' today-hdr' : '');
+    if (i < allDates.length - 1 && allDates[i + 1].getMonth() !== d.getMonth()) th.style.borderRight = '2px solid #2a3a5a';
     r3.appendChild(th);
   });
   thead.appendChild(r3);
   table.appendChild(thead);
 
-  /* body */
   var tbody = document.createElement('tbody');
-  var idx = 1;
-  SEC_ORDER.forEach(function(sec){
-    var group = data.employees.filter(function(e){return e._sec===sec;}); if (!group.length) return;
-    var br = document.createElement('tr'); br.className='sec-banner';
-    var btd = document.createElement('td'); btd.colSpan=fixCols.length+allDates.length;
-    btd.style.background=SEC_COLOR[sec]; btd.style.borderLeft='3px solid '+SEC_ACCENT[sec];
-    btd.textContent='▌  '+SEC_LABEL[sec]+'  ('+group.length+' staff)';
-    br.appendChild(btd); tbody.appendChild(br);
+  data.employees.forEach(function(emp, idx){
+    var tr = document.createElement('tr');
+    tr.className = 'data-row';
+    tr.style.background = idx % 2 === 0 ? '#0d1020' : '#0b0e1a';
 
-    group.forEach(function(emp,ei){
-      var tr = document.createElement('tr'); tr.className='data-row';
-      tr.style.background = ei%2===0?'#0d1020':'#0b0e1a';
+    var todayCode = getTodayStatus(emp);
+    var roleHtml = emp.role ? '<span class="role-pill ' + roleClass(emp.role) + '">' + escapeHtml(emp.role) + '</span>' : '<span class="role-pill empty">—</span>';
+    var todayHtml = '<span class="status-pill ' + getStatusPillClass(todayCode) + '">' + getStatusLabel(todayCode) + '</span>';
 
-      var fds = [
-        {val:String(idx++), color:'var(--muted)', left:0,   w:32,  center:true},
-        {html:'<strong>'+emp.name+'</strong>', left:32,  w:170, center:false},
-        {html:'<span class="role-pill r-'+emp.role.replace(/\s/g,'')+'">'+( emp.role||'—')+'</span>', left:202, w:56,  center:true},
-        {val:String(emp.D.length),  color:'var(--cD)',  left:258, w:34, center:true, mono:true},
-        {val:String(emp.N.length),  color:'var(--cN)',  left:292, w:34, center:true, mono:true},
-        {val:String(emp.AL.length), color:emp.AL.length>0?'var(--cAL)':'var(--muted)', left:326, w:34, center:true, mono:true, br:'2px solid #3a4a6a'}
-      ];
-      fds.forEach(function(fd){
-        var td = document.createElement('td'); td.className=(fd.mono?'td-num ':'')+'td-fix';
-        if (fd.html) td.innerHTML=fd.html; else td.textContent=fd.val;
-        td.style.cssText='left:'+fd.left+'px;min-width:'+fd.w+'px;text-align:'+(fd.center?'center':'left')+';color:'+(fd.color||'var(--text)')+';border-right:'+(fd.br||'1px solid #151e35');
-        tr.appendChild(td);
-      });
+    var fixed = [
+      { html: String(idx + 1), left: 0, w: 36, center: true },
+      { html: '<strong>' + escapeHtml(emp.name) + '</strong>', left: 36, w: 220, center: false },
+      { html: roleHtml, left: 256, w: 82, center: true },
+      { html: todayHtml, left: 338, w: 70, center: true, last: true }
+    ];
 
-      allDates.forEach(function(d,i){
-        var key = d.toISOString().slice(0,10);
-        var code = emp._map[key]||'';
-        var td = document.createElement('td'); var dw = d.getDay();
-        td.className = 'td-cell c-'+code+(dw===5?' fri':dw===6?' sat':'')+(key===TODAY?' today-col':'');
-        td.textContent = code||'—';
-        if (i<allDates.length-1 && allDates[i+1].getMonth()!==d.getMonth()) td.style.borderRight='2px solid #2a3a5a';
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
+    fixed.forEach(function(fd){
+      var td = document.createElement('td');
+      td.className = 'td-fix';
+      td.innerHTML = fd.html;
+      td.style.cssText = 'left:' + fd.left + 'px;min-width:' + fd.w + 'px;text-align:' + (fd.center ? 'center' : 'left') + ';border-right:' + (fd.last ? '2px solid #3a4a6a' : '1px solid #151e35');
+      tr.appendChild(td);
     });
-  });
-  table.appendChild(tbody);
 
+    allDates.forEach(function(d, i){
+      var key = d.toISOString().slice(0, 10);
+      var code = emp._map[key] || '';
+      var dw = d.getDay();
+      var td = document.createElement('td');
+      td.className = 'td-cell ' + getStatusPillClass(code).replace('c-', 'c-') + (dw === 5 ? ' fri' : dw === 6 ? ' sat' : '') + (key === TODAY ? ' today-col' : '');
+      td.textContent = code || '—';
+      if (i < allDates.length - 1 && allDates[i + 1].getMonth() !== d.getMonth()) td.style.borderRight = '2px solid #2a3a5a';
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
   document.getElementById('gridWrap').innerHTML = '';
   document.getElementById('gridWrap').appendChild(table);
   document.getElementById('uploadSection').style.display = 'none';
   document.getElementById('output').style.display = 'block';
 }
 
-function showUpload(){document.getElementById('uploadSection').style.display='block'; document.getElementById('output').style.display='none';}
-function resetAll(){
-  txtData=null;
-  document.getElementById('txtFile').value='';
-  document.getElementById('txtArea').value='';
-  document.getElementById('txtBadge').style.display='none';
-  document.getElementById('progWrap').style.display='none';
+function renderTodaySummary(data, todayInRange){
+  var wrap = document.getElementById('todaySummary');
+  wrap.innerHTML = '';
+
+  if (!todayInRange) {
+    wrap.innerHTML = '<div class="summary-card" style="grid-column:1/-1"><div class="summary-top"><div class="summary-title">Today Summary</div><div class="summary-count">0</div></div><div class="summary-list"><span class="name-tag empty">Today is outside this schedule period.</span></div></div>';
+    return;
+  }
+
+  var working = [];
+  var leave = [];
+  var off = [];
+
+  data.employees.forEach(function(emp){
+    var code = getTodayStatus(emp);
+    if (code === 'D' || code === 'N') working.push(emp.name + ' (' + code + ')');
+    else if (code === 'AL') leave.push(emp.name);
+    else off.push(emp.name + (code ? ' (' + code + ')' : ''));
+  });
+
+  wrap.appendChild(buildSummaryCard('Working Today', working.length, working, 'var(--green)'));
+  wrap.appendChild(buildSummaryCard('On Leave Today', leave.length, leave, 'var(--cAL)'));
+  wrap.appendChild(buildSummaryCard('Off / Unassigned Today', off.length, off, 'var(--red)'));
 }
-document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter')generate();});
+
+function buildSummaryCard(title, count, items, color){
+  var card = document.createElement('div');
+  card.className = 'summary-card';
+  card.innerHTML = '<div class="summary-top"><div class="summary-title">' + escapeHtml(title) + '</div><div class="summary-count" style="color:' + color + '">' + count + '</div></div>';
+  var list = document.createElement('div');
+  list.className = 'summary-list';
+
+  if (!items.length) {
+    var empty = document.createElement('span');
+    empty.className = 'name-tag empty';
+    empty.textContent = 'None';
+    list.appendChild(empty);
+  } else {
+    items.forEach(function(item){
+      var tag = document.createElement('span');
+      tag.className = 'name-tag';
+      tag.textContent = item;
+      list.appendChild(tag);
+    });
+  }
+
+  card.appendChild(list);
+  return card;
+}
+
+function escapeHtml(str){
+  return String(str || '').replace(/[&<>"']/g, function(ch){
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+  });
+}
+
+function showUpload(){
+  document.getElementById('uploadSection').style.display = 'block';
+  document.getElementById('output').style.display = 'none';
+}
+
+function resetAll(){
+  txtData = null;
+  document.getElementById('txtFile').value = '';
+  document.getElementById('txtArea').value = '';
+  document.getElementById('txtBadge').style.display = 'none';
+  document.getElementById('progWrap').style.display = 'none';
+}
+
+document.addEventListener('keydown', function(e){
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') generate();
+});
 </script>
 </body>
 </html>
-```
