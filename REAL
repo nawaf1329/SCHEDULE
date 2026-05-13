@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule Report — Unit R-NA-A3 | 15 Mar – 25 Apr 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #0d2137;
+    --navy2:   #143452;
+    --teal:    #0e7c76;
+    --teal-lt: #d8f3f1;
+    --blue:    #1c6eb0;
+    --blue-lt: #ddeeff;
+    --indigo:  #4a4b9c;
+    --ind-lt:  #e8e8f9;
+    --amber:   #bf7b0c;
+    --amb-lt:  #fff3d9;
+    --red-lt:  #ffeaea;
+    --green:   #1a7a5e;
+    --grn-lt:  #d8f7ef;
+    --bg:      #f4f6fb;
+    --card:    #ffffff;
+    --border:  #dde2ed;
+    --text:    #1a2535;
+    --sub:     #5a6b82;
+    --radius:  10px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  /* ───── HEADER ───── */
+  .site-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 60%, #1c4f72 100%);
+    color: #fff;
+    padding: 40px 48px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,.025) 40px,
+      rgba(255,255,255,.025) 41px
+    );
+  }
+  .header-inner { position:relative; z-index:1; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:20px; }
+  .header-left {}
+  .unit-badge {
+    display:inline-block;
+    font-family:'DM Sans',sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.25);
+    color:rgba(255,255,255,.9);
+    padding:4px 12px;
+    border-radius:20px;
+    margin-bottom:12px;
+  }
+  .report-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:36px;
+    font-weight:700;
+    line-height:1.2;
+    color:#fff;
+    letter-spacing:-.3px;
+  }
+  .report-sub {
+    margin-top:8px;
+    font-size:14px;
+    color:rgba(255,255,255,.7);
+    font-weight:300;
+  }
+  .header-right {
+    text-align:right;
+  }
+  .period-box {
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:var(--radius);
+    padding:16px 22px;
+    min-width:200px;
+  }
+  .period-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.55); }
+  .period-value { font-family:'Cormorant Garamond',serif; font-size:20px; color:#fff; font-weight:600; margin-top:4px; }
+  .period-days  { font-size:11px; color:rgba(255,255,255,.65); margin-top:3px; }
+
+  /* ───── LAYOUT ───── */
+  .main { max-width:1240px; margin:0 auto; padding:36px 24px 60px; }
+
+  /* ───── SECTION HEADER ───── */
+  .section-head {
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:20px; margin-top:40px;
+  }
+  .section-head:first-of-type { margin-top:0; }
+  .section-icon {
+    width:38px; height:38px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:17px; flex-shrink:0;
+  }
+  .section-head h2 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px; font-weight:700; color:var(--navy);
+  }
+  .section-head .s-count {
+    margin-left:auto;
+    font-size:12px; font-weight:600; letter-spacing:.5px;
+    padding:4px 12px; border-radius:20px;
+  }
+
+  /* ───── SUMMARY CARDS ───── */
+  .summary-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
+    gap:16px;
+    margin-top:32px;
+    margin-bottom:8px;
+  }
+  .s-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px 18px;
+    position:relative;
+    overflow:hidden;
+    transition:box-shadow .2s;
+  }
+  .s-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.08); }
+  .s-card::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:4px;
+    border-radius:var(--radius) var(--radius) 0 0;
+  }
+  .s-card.total::before   { background: var(--navy); }
+  .s-card.mgmt::before    { background: var(--teal); }
+  .s-card.day::before     { background: var(--blue); }
+  .s-card.night::before   { background: var(--indigo); }
+  .s-card.leave::before   { background: var(--amber); }
+  .s-card.other::before   { background: var(--green); }
+
+  .s-card-label { font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; color:var(--sub); }
+  .s-card-num   { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:700; line-height:1; margin:6px 0 4px; }
+  .s-card.total   .s-card-num { color:var(--navy); }
+  .s-card.mgmt    .s-card-num { color:var(--teal); }
+  .s-card.day     .s-card-num { color:var(--blue); }
+  .s-card.night   .s-card-num { color:var(--indigo); }
+  .s-card.leave   .s-card-num { color:var(--amber); }
+  .s-card.other   .s-card-num { color:var(--green); }
+  .s-card-desc  { font-size:11.5px; color:var(--sub); }
+
+  /* ───── TABLES ───── */
+  .card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .table-wrap { overflow-x:auto; }
+  table {
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+  }
+  thead th {
+    background:var(--navy);
+    color:rgba(255,255,255,.88);
+    font-weight:600;
+    font-size:10.5px;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+    padding:10px 14px;
+    white-space:nowrap;
+    text-align:left;
+    border-right:1px solid rgba(255,255,255,.06);
+  }
+  thead th:last-child { border-right:none; }
+  tbody tr { border-bottom:1px solid #edf0f6; transition:background .12s; }
+  tbody tr:hover { background:#f7f9fd; }
+  tbody tr:last-child { border-bottom:none; }
+  tbody td {
+    padding:9px 14px;
+    vertical-align:middle;
+    white-space:nowrap;
+  }
+
+  /* color header overrides per section */
+  .tbl-mgmt    thead th { background: var(--teal); }
+  .tbl-day     thead th { background: var(--blue); }
+  .tbl-night   thead th { background: var(--indigo); }
+  .tbl-leave   thead th { background: #b56b00; }
+  .tbl-other   thead th { background: var(--green); }
+  .tbl-full    thead th { background: var(--navy2); font-size:10px; padding:9px 11px; }
+
+  /* ───── PILL BADGES ───── */
+  .pill {
+    display:inline-block;
+    padding:2px 9px;
+    border-radius:12px;
+    font-size:11px;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .pill-role    { background:#eef2ff; color:#3d4db8; }
+  .pill-day     { background:var(--blue-lt); color:var(--blue); }
+  .pill-night   { background:var(--ind-lt); color:var(--indigo); }
+  .pill-leave   { background:var(--amb-lt); color:var(--amber); }
+  .pill-mixed   { background:#f0eeff; color:#5843a0; }
+  .pill-green   { background:var(--grn-lt); color:var(--green); }
+  .pill-gray    { background:#eef0f4; color:#5a6b82; }
+  .pill-mgmt    { background:var(--teal-lt); color:var(--teal); }
+  .pill-wc      { background:#faeaff; color:#7a2da5; }
+  .pill-defa    { background:#fff0e8; color:#a04310; }
+  .pill-cln     { background:#e8ffe8; color:#286b20; }
+
+  .num-pos { color:var(--blue); font-weight:600; }
+  .num-ngt { color:var(--indigo); font-weight:600; }
+  .num-al  { color:var(--amber); font-weight:600; }
+  .num-zero { color:#b0bac8; }
+
+  /* leave period chip */
+  .leave-period {
+    display:inline-block;
+    background:var(--amb-lt);
+    color:#8a5100;
+    border:1px solid #f0d080;
+    border-radius:6px;
+    padding:2px 8px;
+    font-size:11px;
+    white-space:nowrap;
+    margin:1px 2px;
+  }
+
+  /* ───── DIVIDER ───── */
+  .divider {
+    border:none;
+    border-top:1px solid var(--border);
+    margin:32px 0;
+  }
+
+  /* ───── DATA INTEGRITY NOTE ───── */
+  .integrity-box {
+    background: #f0f4ff;
+    border:1px solid #c8d5f5;
+    border-left:4px solid var(--navy);
+    border-radius:var(--radius);
+    padding:20px 24px;
+    margin-top:32px;
+  }
+  .integrity-box h3 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:17px; font-weight:700;
+    color:var(--navy); margin-bottom:8px;
+  }
+  .integrity-box p { font-size:12.5px; color:#384a62; line-height:1.6; }
+  .integrity-box ul { margin-top:8px; padding-left:18px; }
+  .integrity-box li { font-size:12.5px; color:#384a62; margin-bottom:4px; }
+
+  /* ───── BREAKDOWN TABLE ───── */
+  .breakdown-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap:16px;
+    margin-top:20px;
+  }
+  .breakdown-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:0;
+    overflow:hidden;
+  }
+  .breakdown-head {
+    padding:12px 18px;
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#fff;
+  }
+  .breakdown-body { padding:4px 0; }
+  .breakdown-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:7px 18px;
+    border-bottom:1px solid #f0f2f7;
+    font-size:12.5px;
+  }
+  .breakdown-row:last-child { border-bottom:none; }
+  .br-name { color:var(--text); }
+  .br-val  { font-weight:600; color:var(--navy); }
+
+  /* ───── PAGE FOOTER ───── */
+  .page-footer {
+    text-align:center;
+    padding:24px;
+    font-size:11.5px;
+    color:#8a9bb5;
+    border-top:1px solid var(--border);
+    margin-top:40px;
+  }
+
+  @media print {
+    body { background:#fff; font-size:11px; }
+    .site-header { padding:24px 32px; }
+    .main { padding:20px 16px; }
+    table { font-size:10px; }
+    thead th { padding:7px 10px; }
+    tbody td { padding:6px 10px; }
+    .summary-grid { gap:10px; }
+    .s-card { padding:14px 12px; }
+    .s-card-num { font-size:34px; }
+    .section-head { margin-top:28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════  HEADER  ═══════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="unit-badge">Unit R – NA – A3</div>
+      <h1 class="report-title">Staff Schedule Report</h1>
+      <p class="report-sub">Extracted from source PDF &nbsp;·&nbsp; No schedule data was intentionally altered</p>
+    </div>
+    <div class="header-right">
+      <div class="period-box">
+        <div class="period-label">Schedule Period</div>
+        <div class="period-value">15 Mar → 25 Apr 2026</div>
+        <div class="period-days">42 calendar days</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════  MAIN  ═══════════════════════════ -->
+<main class="main">
+
+  <!-- ── EXECUTIVE SUMMARY ── -->
+  <div class="section-head" style="margin-top:0">
+    <div class="section-icon" style="background:#e8edf5">📊</div>
+    <h2>Executive Summary</h2>
+  </div>
+
+  <div class="summary-grid">
+    <div class="s-card total">
+      <div class="s-card-label">Total Records</div>
+      <div class="s-card-num">59</div>
+      <div class="s-card-desc">Employee records extracted</div>
+    </div>
+    <div class="s-card mgmt">
+      <div class="s-card-label">Management / Admin</div>
+      <div class="s-card-num">3</div>
+      <div class="s-card-desc">AHN &amp; CI roles</div>
+    </div>
+    <div class="s-card day">
+      <div class="s-card-label">Day Shift Staff</div>
+      <div class="s-card-num">31</div>
+      <div class="s-card-desc">SN I &amp; CA, day-primary</div>
+    </div>
+    <div class="s-card night">
+      <div class="s-card-label">Night Shift Staff</div>
+      <div class="s-card-num">20</div>
+      <div class="s-card-desc">SN I &amp; CA, night-primary</div>
+    </div>
+    <div class="s-card leave">
+      <div class="s-card-label">Staff with Annual Leave</div>
+      <div class="s-card-num">35</div>
+      <div class="s-card-desc">AL days recorded this period</div>
+    </div>
+    <div class="s-card other">
+      <div class="s-card-label">Other Roles</div>
+      <div class="s-card-num">5</div>
+      <div class="s-card-desc">CLN, WC, Defa</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════  MANAGEMENT / ADMIN  ══════════════════════ -->
+  <div class="section-head">
+    <div class="section-icon" style="background:var(--teal-lt)">🏥</div>
+    <h2>Management &amp; Administration</h2>
+    <span class="s-count pill-mgmt pill">3 staff</span>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl-mgmt">
+        <thead>
+          <tr>
+            <th>Name</th><th>Role</th><th>FTE</th><th>Phone</th>
+            <th>Worked Days</th><th>Day Shifts</th><th>Night Shifts</th>
+            <th>Annual Leave</th><th>Request-Off</th><th>Other OFF</th><th>Blank Days</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Omar, Sadal</strong></td>
+            <td><span class="pill pill-mgmt">AHN</span></td>
+            <td>1.00</td><td>050-216-1119</td>
+            <td><strong>30</strong></td>
+            <td class="num-pos">30</td>
+            <td class="num-zero">0</td>
+            <td class="num-zero">0</td>
+            <td class="num-zero">0</td>
+            <td class="num-zero">0</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <td><strong>Qurayah, Ibrahim</strong></td>
+            <td><span class="pill pill-mgmt">AHN</span></td>
+            <td>1.00</td><td>054-433-4562</td>
+            <td><strong>20</strong></td>
+            <td class="num-pos">20</td>
+            <td class="num-zero">0</td>
+            <td class="num-al">12</td>
+            <td class="num-zero">0</td>
+            <td>2</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td><strong>Altiti, Ibrahim</strong></td>
+            <td><span class="pill pill-mgmt">CI</span></td>
+            <td>1.00</td><td>478-04</td>
+            <td><strong>30</strong></td>
+            <td class="num-pos">30</td>
+            <td class="num-zero">0</td>
+            <td class="num-zero">0</td>
+            <td class="num-zero">0</td>
+            <td class="num-zero">0</td>
+            <td>12</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Annual leave note for management -->
+  <p style="margin-top:10px; font-size:12px; color:var(--sub); padding-left:4px;">
+    ⚠ &nbsp;<strong>Qurayah, Ibrahim</strong> — Annual Leave: 2026-03-15 → 2026-03-26 &nbsp;|&nbsp; OFF/REST: 2026-03-27 → 2026-03-28
+  </p>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════  DAY SHIFT STAFF  ══════════════════════ -->
+  <div class="section-head">
+    <div class="section-icon" style="background:var(--blue-lt)">☀️</div>
+    <h2>Day Shift Staff</h2>
+    <span class="s-count pill pill-day">31 staff &nbsp;·&nbsp; SN I &amp; CA roles, day-primary</span>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl-day">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>Role</th><th>Page</th>
+            <th>Worked Days</th><th>Day Shifts</th><th>Night Shifts</th>
+            <th>Annual Leave</th><th>Req-Off</th><th>Other OFF</th><th>Leave Period</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Abdul Razak, Nur Hasimah</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>2</td><td class="num-pos">2</td><td class="num-zero">0</td><td class="num-al">34</td><td class="num-zero">0</td><td>5</td><td><span class="leave-period">18 Mar → 20 Apr</span></td></tr>
+          <tr><td>2</td><td><strong>Abraham, Linu</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>11</td><td class="num-pos">11</td><td class="num-zero">0</td><td class="num-al">21</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">05 Apr → 25 Apr</span></td></tr>
+          <tr><td>3</td><td><strong>Alabboud, Haia</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>14</td><td class="num-pos">14</td><td class="num-zero">0</td><td class="num-al">12</td><td class="num-zero">0</td><td>5</td><td><span class="leave-period">12 Apr → 23 Apr</span></td></tr>
+          <tr><td>4</td><td><strong>Alamri, Shuaa</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>17</td><td class="num-pos">13</td><td class="num-ngt">4</td><td class="num-al">9</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">20 Mar → 28 Mar</span></td></tr>
+          <tr><td>5</td><td><strong>Aldughayshim, Shahad</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>17</td><td class="num-pos">10</td><td class="num-ngt">7</td><td class="num-al">7</td><td class="num-zero">0</td><td>5</td><td><span class="leave-period">05 Apr → 11 Apr</span></td></tr>
+          <tr><td>6</td><td><strong>Alghamdi, Anas</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>14</td><td class="num-pos">11</td><td class="num-ngt">3</td><td class="num-al">14</td><td class="num-zero">0</td><td>5</td><td><span class="leave-period">22 Mar → 04 Apr</span></td></tr>
+          <tr><td>7</td><td><strong>Alhumaid, Layan</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>15</td><td class="num-pos">10</td><td class="num-ngt">5</td><td class="num-al">9</td><td>2</td><td>4</td><td><span class="leave-period">18 Mar → 26 Mar</span></td></tr>
+          <tr><td>8</td><td><strong>Alisoso, Chantily</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>19</td><td class="num-pos">12</td><td class="num-ngt">7</td><td class="num-al">5</td><td class="num-zero">0</td><td>2</td><td><span class="leave-period">21 Apr → 25 Apr</span></td></tr>
+          <tr><td>9</td><td><strong>Almulhim, Shooq</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>18</td><td class="num-pos">10</td><td class="num-ngt">8</td><td class="num-al">3</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">15 Mar → 17 Mar</span></td></tr>
+          <tr><td>10</td><td><strong>Alnefaie, Ibtihal</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>18</td><td class="num-pos">11</td><td class="num-ngt">7</td><td class="num-al">5</td><td class="num-zero">0</td><td>2</td><td><span class="leave-period">15 Mar → 19 Mar</span></td></tr>
+          <tr><td>11</td><td><strong>Alrashdi, Lamyaa</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>18</td><td class="num-pos">9</td><td class="num-ngt">9</td><td class="num-al">5</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">15 Mar → 19 Mar</span></td></tr>
+          <tr><td>12</td><td><strong>Binti Othman, Hamizah</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>11</td><td class="num-pos">6</td><td class="num-ngt">5</td><td class="num-al">20</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">16 Mar → 04 Apr</span></td></tr>
+          <tr><td>13</td><td><strong>Bobis, Ariane</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>22</td><td class="num-pos">12</td><td class="num-ngt">10</td><td class="num-zero">0</td><td>3</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>14</td><td><strong>Dela Rosa, Ma Jesanica</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>19</td><td class="num-pos">10</td><td class="num-ngt">9</td><td class="num-al">3</td><td class="num-zero">0</td><td>4</td><td><span class="leave-period">02 Apr → 04 Apr</span></td></tr>
+          <tr><td>15</td><td><strong>Eezaldeen, Wejdan</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>18</td><td class="num-pos">9</td><td class="num-ngt">9</td><td class="num-al">3</td><td class="num-zero">0</td><td>1</td><td><span class="leave-period">15 Mar → 17 Mar</span></td></tr>
+          <tr><td>16</td><td><strong>Gallano, Dolly</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>22</td><td class="num-pos">12</td><td class="num-ngt">10</td><td class="num-zero">0</td><td>2</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>17</td><td><strong>Ido, Jimlex</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>22</td><td class="num-pos">12</td><td class="num-ngt">10</td><td class="num-zero">0</td><td>3</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>18</td><td><strong>Joseph, Dency</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>11</td><td class="num-pos">11</td><td class="num-zero">0</td><td class="num-al">21</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">05 Apr → 25 Apr</span></td></tr>
+          <tr><td>19</td><td><strong>Kumar, Priyadarshini Vijaya</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>20</td><td class="num-pos">11</td><td class="num-ngt">9</td><td class="num-al">2</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">24 Apr → 25 Apr</span></td></tr>
+          <tr><td>20</td><td><strong>M Hussein, Halimatun Sadiah</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>14</td><td class="num-pos">14</td><td class="num-zero">0</td><td class="num-al">12</td><td class="num-zero">0</td><td>2</td><td><span class="leave-period">14 Apr → 25 Apr</span></td></tr>
+          <tr><td>21</td><td><strong>Mohtar, Mouayad</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>21</td><td class="num-pos">12</td><td class="num-ngt">9</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>22</td><td><strong>Mooney, Charlene</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>20</td><td class="num-pos">20</td><td class="num-zero">0</td><td class="num-al">2</td><td>4</td><td>5</td><td><span class="leave-period">31 Mar → 01 Apr</span></td></tr>
+          <tr><td>23</td><td><strong>Rayzah, Raghad</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>21</td><td class="num-pos">12</td><td class="num-ngt">9</td><td class="num-zero">0</td><td>1</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>24</td><td><strong>Trillana, Catherine Mae</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>19</td><td class="num-pos">10</td><td class="num-ngt">9</td><td class="num-al">3</td><td>2</td><td>4</td><td><span class="leave-period">09 Apr → 11 Apr</span></td></tr>
+          <tr><td>25</td><td><strong>Vatumalai, Nanthini</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>22</td><td class="num-pos">13</td><td class="num-ngt">9</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>26</td><td><strong>Ybanez, Jay Ann</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>18</td><td class="num-pos">9</td><td class="num-ngt">9</td><td class="num-al">5</td><td class="num-zero">0</td><td>2</td><td><span class="leave-period">27 Mar → 31 Mar</span></td></tr>
+          <tr><td>27</td><td><strong>Ferrer, Ana Liza</strong></td><td><span class="pill pill-role">CA</span></td><td>4</td><td>22</td><td class="num-pos">13</td><td class="num-ngt">9</td><td class="num-zero">0</td><td>2</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>28</td><td><strong>Moreno, Jane</strong></td><td><span class="pill pill-role">CA</span></td><td>4</td><td>7</td><td class="num-pos">7</td><td class="num-zero">0</td><td class="num-al">28</td><td class="num-zero">0</td><td>3</td><td><span class="leave-period">29 Mar → 25 Apr</span></td></tr>
+          <tr><td>29</td><td><strong>Salutem, Divina</strong></td><td><span class="pill pill-role">CA</span></td><td>5</td><td>22</td><td class="num-pos">22</td><td class="num-zero">0</td><td class="num-zero">0</td><td>1</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>30</td><td><strong>Tandih, Raicel</strong></td><td><span class="pill pill-role">CA</span></td><td>5</td><td>21</td><td class="num-pos">15</td><td class="num-ngt">6</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>31</td><td><strong>Vergel, Carmela Dawn</strong></td><td><span class="pill pill-role">CA</span></td><td>5</td><td>16</td><td class="num-pos">13</td><td class="num-ngt">3</td><td class="num-al">7</td><td>1</td><td>2</td><td><span class="leave-period">19 Mar → 25 Mar</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════  NIGHT SHIFT STAFF  ══════════════════════ -->
+  <div class="section-head">
+    <div class="section-icon" style="background:var(--ind-lt)">🌙</div>
+    <h2>Night Shift Staff</h2>
+    <span class="s-count pill pill-night">20 staff &nbsp;·&nbsp; SN I &amp; CA roles, night-primary</span>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl-night">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>Role</th><th>Page</th>
+            <th>Worked Days</th><th>Day Shifts</th><th>Night Shifts</th>
+            <th>Annual Leave</th><th>Req-Off</th><th>Other OFF</th><th>Leave Period</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Alabdan, Maha</strong></td><td><span class="pill pill-role">SN I</span></td><td>1</td><td>18</td><td class="num-pos">7</td><td class="num-ngt">11</td><td class="num-al">3</td><td class="num-zero">0</td><td>2</td><td><span class="leave-period">23 Apr → 25 Apr</span></td></tr>
+          <tr><td>2</td><td><strong>Alotaibi, Hanan</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>16</td><td class="num-pos">7</td><td class="num-ngt">9</td><td class="num-al">7</td><td class="num-zero">0</td><td>5</td><td><span class="leave-period">20 Mar → 26 Mar</span></td></tr>
+          <tr><td>3</td><td><strong>Alshammari, Nawaf</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>18</td><td class="num-pos">6</td><td class="num-ngt">12</td><td class="num-al">7</td><td class="num-zero">0</td><td>2</td><td><span class="leave-period">15 Mar → 21 Mar</span></td></tr>
+          <tr><td>4</td><td><strong>Alshanqiti, Abdulkarim</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>21</td><td class="num-pos">7</td><td class="num-ngt">14</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>5</td><td><strong>Alshehri, Maha</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>15</td><td class="num-pos">7</td><td class="num-ngt">8</td><td class="num-al">7</td><td class="num-zero">0</td><td>1</td><td><span class="leave-period">18 Mar → 24 Mar</span></td></tr>
+          <tr><td>6</td><td><strong>Alsubeih, Rana</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>20</td><td class="num-pos">4</td><td class="num-ngt">16</td><td class="num-al">1</td><td>2</td><td>1</td><td><span class="leave-period">15 Mar</span></td></tr>
+          <tr><td>7</td><td><strong>Chellappa, Viji</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>22</td><td class="num-pos">9</td><td class="num-ngt">13</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>8</td><td><strong>Danas, Elvira</strong></td><td><span class="pill pill-role">SN I</span></td><td>2</td><td>23</td><td class="num-pos">11</td><td class="num-ngt">12</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>9</td><td><strong>Jore, Maripaz</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>15</td><td class="num-pos">2</td><td class="num-ngt">13</td><td class="num-al">11</td><td class="num-zero">0</td><td>5</td><td><span class="leave-period">12 Apr → 22 Apr</span></td></tr>
+          <tr><td>10</td><td><strong>Kanniah, Shaleny</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>14</td><td class="num-pos">6</td><td class="num-ngt">8</td><td class="num-al">14</td><td>1</td><td>5</td><td><span class="leave-period">29 Mar → 11 Apr</span></td></tr>
+          <tr><td>11</td><td><strong>Macalanggan, Nora Niah</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>8</td><td class="num-zero">0</td><td class="num-ngt">8</td><td class="num-al">24</td><td>1</td><td>2</td><td><span class="leave-period">02 Apr → 25 Apr</span></td></tr>
+          <tr><td>12</td><td><strong>Mohd Radzi, Faten Nadiah</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>21</td><td class="num-pos">9</td><td class="num-ngt">12</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>13</td><td><strong>Mohd Rashid, Siti Rosma Atiqah</strong></td><td><span class="pill pill-role">SN I</span></td><td>3</td><td>15</td><td class="num-zero">0</td><td class="num-ngt">15</td><td class="num-al">11</td><td>2</td><td>3</td><td><span class="leave-period">15 Mar → 25 Mar</span></td></tr>
+          <tr><td>14</td><td><strong>Sabado, Estifanny</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>22</td><td class="num-pos">10</td><td class="num-ngt">12</td><td class="num-zero">0</td><td>2</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>15</td><td><strong>Sim, Nellen</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>23</td><td class="num-pos">10</td><td class="num-ngt">13</td><td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>16</td><td><strong>Sujatha, Sinchu Soman</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>23</td><td class="num-pos">9</td><td class="num-ngt">14</td><td class="num-zero">0</td><td>1</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>17</td><td><strong>Thomas, Leema</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>13</td><td class="num-pos">4</td><td class="num-ngt">9</td><td class="num-al">12</td><td class="num-zero">0</td><td>4</td><td><span class="leave-period">26 Mar → 06 Apr</span></td></tr>
+          <tr><td>18</td><td><strong>Valdez, Sheia Grazielle</strong></td><td><span class="pill pill-role">SN I</span></td><td>4</td><td>21</td><td class="num-pos">6</td><td class="num-ngt">15</td><td class="num-zero">0</td><td>3</td><td class="num-zero">0</td><td>—</td></tr>
+          <tr><td>19</td><td><strong>Alonsagay, Myra</strong></td><td><span class="pill pill-role">CA</span></td><td>4</td><td>15</td><td class="num-pos">2</td><td class="num-ngt">13</td><td class="num-al">12</td><td class="num-zero">0</td><td>4</td><td><span class="leave-period">17 Mar → 28 Mar</span></td></tr>
+          <tr><td>20</td><td><strong>Mahinay, Rona Victoria</strong></td><td><span class="pill pill-role">CA</span></td><td>4</td><td>22</td><td class="num-pos">9</td><td class="num-ngt">13</td><td class="num-zero">0</td><td>2</td><td class="num-zero">0</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════  STAFF ON LEAVE  ══════════════════════ -->
+  <div class="section-head">
+    <div class="section-icon" style="background:var(--amb-lt)">📋</div>
+    <h2>Annual Leave Summary</h2>
+    <span class="s-count pill pill-leave">35 staff with recorded AL</span>
+  </div>
+  <p style="margin-bottom:16px; font-size:12.5px; color:var(--sub);">
+    All staff who have annual leave (AL) days recorded in this period, sorted by AL days descending. Staff continue to appear in their primary shift section above.
+  </p>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl-leave">
+        <thead>
+          <tr>
+            <th>Name</th><th>Role</th><th>Primary Section</th>
+            <th>AL Days</th><th>Leave Period(s)</th><th>Req-Off Days</th><th>Other OFF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Abdul Razak, Nur Hasimah</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">34</td><td><span class="leave-period">2026-03-18 → 2026-04-20</span></td><td class="num-zero">0</td><td>5</td></tr>
+          <tr><td><strong>Moreno, Jane</strong></td><td><span class="pill pill-role">CA</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">28</td><td><span class="leave-period">2026-03-29 → 2026-04-25</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Macalanggan, Nora Niah</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">24</td><td><span class="leave-period">2026-04-02 → 2026-04-25</span></td><td>1</td><td>2</td></tr>
+          <tr><td><strong>Abraham, Linu</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">21</td><td><span class="leave-period">2026-04-05 → 2026-04-25</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Joseph, Dency</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">21</td><td><span class="leave-period">2026-04-05 → 2026-04-25</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Binti Othman, Hamizah</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">20</td><td><span class="leave-period">2026-03-16 → 2026-04-04</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Alghamdi, Anas</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">14</td><td><span class="leave-period">2026-03-22 → 2026-04-04</span></td><td class="num-zero">0</td><td>5</td></tr>
+          <tr><td><strong>Kanniah, Shaleny</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">14</td><td><span class="leave-period">2026-03-29 → 2026-04-11</span></td><td>1</td><td>5</td></tr>
+          <tr><td><strong>Alaklabi, Bushra</strong></td><td><span class="pill pill-wc">WC</span></td><td><span class="pill pill-green">Other</span></td><td class="num-al">14</td><td><span class="leave-period">2026-03-15 → 2026-03-28</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Alabboud, Haia</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">12</td><td><span class="leave-period">2026-04-12 → 2026-04-23</span></td><td class="num-zero">0</td><td>5</td></tr>
+          <tr><td><strong>Alonsagay, Myra</strong></td><td><span class="pill pill-role">CA</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">12</td><td><span class="leave-period">2026-03-17 → 2026-03-28</span></td><td class="num-zero">0</td><td>4</td></tr>
+          <tr><td><strong>M Hussein, Halimatun Sadiah</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">12</td><td><span class="leave-period">2026-04-14 → 2026-04-25</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Qurayah, Ibrahim</strong></td><td><span class="pill pill-mgmt">AHN</span></td><td><span class="pill pill-mgmt">Mgmt</span></td><td class="num-al">12</td><td><span class="leave-period">2026-03-15 → 2026-03-26</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Thomas, Leema</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">12</td><td><span class="leave-period">2026-03-26 → 2026-04-06</span></td><td class="num-zero">0</td><td>4</td></tr>
+          <tr><td><strong>Jore, Maripaz</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">11</td><td><span class="leave-period">2026-04-12 → 2026-04-22</span></td><td class="num-zero">0</td><td>5</td></tr>
+          <tr><td><strong>Mohd Rashid, Siti Rosma Atiqah</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">11</td><td><span class="leave-period">2026-03-15 → 2026-03-25</span></td><td>2</td><td>3</td></tr>
+          <tr><td><strong>Alhumaid, Layan</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">9</td><td><span class="leave-period">2026-03-18 → 2026-03-26</span></td><td>2</td><td>4</td></tr>
+          <tr><td><strong>Alamri, Shuaa</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">9</td><td><span class="leave-period">2026-03-20 → 2026-03-28</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Alotaibi, Hanan</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">7</td><td><span class="leave-period">2026-03-20 → 2026-03-26</span></td><td class="num-zero">0</td><td>5</td></tr>
+          <tr><td><strong>Aldughayshim, Shahad</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">7</td><td><span class="leave-period">2026-04-05 → 2026-04-11</span></td><td class="num-zero">0</td><td>5</td></tr>
+          <tr><td><strong>Alshammari, Nawaf</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">7</td><td><span class="leave-period">2026-03-15 → 2026-03-21</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Alshehri, Maha</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">7</td><td><span class="leave-period">2026-03-18 → 2026-03-24</span></td><td class="num-zero">0</td><td>1</td></tr>
+          <tr><td><strong>Vergel, Carmela Dawn</strong></td><td><span class="pill pill-role">CA</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">7</td><td><span class="leave-period">2026-03-19 → 2026-03-25</span></td><td>1</td><td>2</td></tr>
+          <tr><td><strong>Alanazi, Razan</strong></td><td><span class="pill pill-defa">Defa</span></td><td><span class="pill pill-green">Other</span></td><td class="num-al">6</td><td><span class="leave-period">2026-03-26 → 2026-03-31</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Alisoso, Chantily</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">5</td><td><span class="leave-period">2026-04-21 → 2026-04-25</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Alnefaie, Ibtihal</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">5</td><td><span class="leave-period">2026-03-15 → 2026-03-19</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Ybanez, Jay Ann</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">5</td><td><span class="leave-period">2026-03-27 → 2026-03-31</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Alrashdi, Lamyaa</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">5</td><td><span class="leave-period">2026-03-15 → 2026-03-19</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Dela Rosa, Ma Jesanica</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">3</td><td><span class="leave-period">2026-04-02 → 2026-04-04</span></td><td class="num-zero">0</td><td>4</td></tr>
+          <tr><td><strong>Eezaldeen, Wejdan</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">3</td><td><span class="leave-period">2026-03-15 → 2026-03-17</span></td><td class="num-zero">0</td><td>1</td></tr>
+          <tr><td><strong>Almulhim, Shooq</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">3</td><td><span class="leave-period">2026-03-15 → 2026-03-17</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Alabdan, Maha</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">3</td><td><span class="leave-period">2026-04-23 → 2026-04-25</span></td><td class="num-zero">0</td><td>2</td></tr>
+          <tr><td><strong>Trillana, Catherine Mae</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">3</td><td><span class="leave-period">2026-04-09 → 2026-04-11</span></td><td>2</td><td>4</td></tr>
+          <tr><td><strong>Kumar, Priyadarshini Vijaya</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">2</td><td><span class="leave-period">2026-04-24 → 2026-04-25</span></td><td class="num-zero">0</td><td>3</td></tr>
+          <tr><td><strong>Mooney, Charlene</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-day">Day</span></td><td class="num-al">2</td><td><span class="leave-period">2026-03-31 → 2026-04-01</span></td><td>4</td><td>5</td></tr>
+          <tr><td><strong>Alsubeih, Rana</strong></td><td><span class="pill pill-role">SN I</span></td><td><span class="pill pill-night">Night</span></td><td class="num-al">1</td><td><span class="leave-period">2026-03-15</span></td><td>2</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════  OTHER CATEGORIES  ══════════════════════ -->
+  <div class="section-head">
+    <div class="section-icon" style="background:var(--grn-lt)">🔖</div>
+    <h2>Other Categories</h2>
+    <span class="s-count pill pill-green">5 staff &nbsp;·&nbsp; CLN, WC, Defa roles</span>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl-other">
+        <thead>
+          <tr>
+            <th>Name</th><th>Role</th><th>FTE</th><th>Phone</th>
+            <th>Worked Days</th><th>Day Shifts</th><th>Night Shifts</th>
+            <th>Annual Leave</th><th>Req-Off</th><th>Other OFF</th><th>Blank Days</th><th>Leave Period</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Shukr, Walaa</strong></td>
+            <td><span class="pill pill-cln">CLN</span></td>
+            <td>1.00</td><td>053-096-0908</td>
+            <td>30</td><td class="num-pos">30</td><td class="num-zero">0</td>
+            <td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>12</td><td>—</td>
+          </tr>
+          <tr>
+            <td><strong>Alaklabi, Bushra</strong></td>
+            <td><span class="pill pill-wc">WC</span></td>
+            <td>1.00</td><td>009-665-09154281</td>
+            <td>13</td><td class="num-pos">13</td><td class="num-zero">0</td>
+            <td class="num-al">14</td><td class="num-zero">0</td><td>2</td><td>13</td><td><span class="leave-period">15 Mar → 28 Mar</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mohammad, Faiza</strong></td>
+            <td><span class="pill pill-wc">WC</span></td>
+            <td>1.00</td><td>054-033-4141</td>
+            <td>25</td><td class="num-pos">25</td><td class="num-zero">0</td>
+            <td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>17</td><td>—</td>
+          </tr>
+          <tr>
+            <td><strong>Alanazi, Razan</strong></td>
+            <td><span class="pill pill-defa">Defa</span></td>
+            <td>1.00</td><td>009-665-93175370</td>
+            <td>15</td><td class="num-pos">10</td><td class="num-ngt">5</td>
+            <td class="num-al">6</td><td class="num-zero">0</td><td>2</td><td>19</td><td><span class="leave-period">26 Mar → 31 Mar</span></td>
+          </tr>
+          <tr>
+            <td><strong>Alswair, Rabab</strong></td>
+            <td><span class="pill pill-defa">Defa</span></td>
+            <td>1.00</td><td>434-4</td>
+            <td>30</td><td class="num-pos">30</td><td class="num-zero">0</td>
+            <td class="num-zero">0</td><td class="num-zero">0</td><td class="num-zero">0</td><td>12</td><td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════  FULL CALENDAR GRID  ══════════════════════ -->
+  <div class="section-head">
+    <div class="section-icon" style="background:#e8edf5">📅</div>
+    <h2>Full Schedule Grid — All 59 Staff × All 42 Days</h2>
+    <span class="s-count pill pill-gray">كل الموظفين × كل الأيام</span>
+  </div>
+
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:16px;font-size:12px;">
+    <span style="background:#ddeeff;color:#1c6eb0;padding:3px 10px;border-radius:5px;font-weight:700">D = Day Shift</span>
+    <span style="background:#e8e8f9;color:#4a4b9c;padding:3px 10px;border-radius:5px;font-weight:700">N = Night Shift</span>
+    <span style="background:#fff3d9;color:#bf7b0c;padding:3px 10px;border-radius:5px;font-weight:700">AL = Annual Leave</span>
+    <span style="background:#f0f0f0;color:#5a6b82;padding:3px 10px;border-radius:5px;font-weight:700">RO = Request-Off</span>
+    <span style="background:#ffeaea;color:#c0392b;padding:3px 10px;border-radius:5px;font-weight:700">X = Other OFF/REST</span>
+    <span style="color:#b0bac8;padding:3px 10px;border:1px solid #e0e4ee;border-radius:5px;font-weight:700">— = Blank</span>
+  </div>
+
+  <div class="card" style="overflow:auto">
+    <table id="gridTable" style="border-collapse:collapse;font-size:11px;min-width:100%">
+    </table>
+  </div>
+
+<script>
+(function(){
+
+function drange(from, to) {
+  const res=[], s=new Date(from), e=new Date(to);
+  for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1))
+    res.push(d.toISOString().slice(0,10));
+  return res;
+}
+
+// Build all 42 calendar dates from 2026-03-15 to 2026-04-25
+const allDates = [];
+const start = new Date(2026,2,15);
+for(let i=0;i<42;i++){
+  const d = new Date(start); d.setDate(start.getDate()+i);
+  allDates.push(d);
+}
+const dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+const EMP = [
+  {n:1, name:"Omar, Sadal", role:"AHN", sec:"Mgmt",
+   D:["2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23"],
+   N:[],AL:[],RO:[],X:[]},
+
+  {n:2, name:"Qurayah, Ibrahim", role:"AHN", sec:"Mgmt",
+   D:["2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23"],
+   N:[],AL:drange("2026-03-15","2026-03-26"),RO:[],X:drange("2026-03-27","2026-03-28")},
+
+  {n:3, name:"Altiti, Ibrahim", role:"CI", sec:"Mgmt",
+   D:["2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23"],
+   N:[],AL:[],RO:[],X:[]},
+
+  {n:4, name:"Shukr, Walaa", role:"CLN", sec:"Other",
+   D:["2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23"],
+   N:[],AL:[],RO:[],X:[]},
+
+  {n:5, name:"Abdul Razak, Nur Hasimah", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-04-24"],N:[],AL:drange("2026-03-18","2026-04-20"),RO:[],
+   X:[...drange("2026-03-16","2026-03-17"),...drange("2026-04-21","2026-04-23")]},
+
+  {n:6, name:"Abraham, Linu", role:"SN I", sec:"Day",
+   D:["2026-03-17","2026-03-18","2026-03-20","2026-03-21","2026-03-22","2026-03-26","2026-03-27","2026-03-28","2026-03-30","2026-03-31","2026-04-01"],
+   N:[],AL:drange("2026-04-05","2026-04-25"),RO:[],X:drange("2026-04-02","2026-04-04")},
+
+  {n:7, name:"Alabboud, Haia", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04","2026-04-07","2026-04-08"],
+   N:[],AL:drange("2026-04-12","2026-04-23"),RO:[],
+   X:[...drange("2026-04-09","2026-04-11"),...drange("2026-04-24","2026-04-25")]},
+
+  {n:8, name:"Alabdan, Maha", role:"SN I", sec:"Night",
+   D:["2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-03-30","2026-03-31"],
+   N:["2026-03-17","2026-03-18","2026-04-03","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-20"],
+   AL:drange("2026-04-23","2026-04-25"),RO:[],X:drange("2026-04-21","2026-04-22")},
+
+  {n:9, name:"Alamri, Shuaa", role:"SN I", sec:"Day",
+   D:["2026-04-05","2026-04-06","2026-04-07","2026-04-11","2026-04-12","2026-04-13","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-17","2026-03-18","2026-03-31","2026-04-01"],
+   AL:drange("2026-03-20","2026-03-28"),RO:[],X:["2026-03-19",...drange("2026-03-29","2026-03-30")]},
+
+  {n:10, name:"Aldughayshim, Shahad", role:"SN I", sec:"Day",
+   D:["2026-03-31","2026-04-01","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-21","2026-04-23","2026-04-25"],
+   N:["2026-03-17","2026-03-18","2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28"],
+   AL:drange("2026-04-05","2026-04-11"),RO:[],X:[...drange("2026-04-02","2026-04-04"),...drange("2026-04-12","2026-04-13")]},
+
+  {n:11, name:"Alghamdi, Anas", role:"SN I", sec:"Day",
+   D:["2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22","2026-04-23"],
+   N:["2026-03-15","2026-03-16","2026-03-18"],
+   AL:drange("2026-03-22","2026-04-04"),RO:[],X:[...drange("2026-03-19","2026-03-21"),...drange("2026-04-05","2026-04-06")]},
+
+  {n:12, name:"Alhumaid, Layan", role:"SN I", sec:"Day",
+   D:["2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   N:["2026-03-15","2026-03-16","2026-03-30","2026-03-31","2026-04-01"],
+   AL:drange("2026-03-18","2026-03-26"),RO:["2026-04-03","2026-04-04"],
+   X:["2026-03-17",...drange("2026-03-27","2026-03-29")]},
+
+  {n:13, name:"Alisoso, Chantily", role:"SN I", sec:"Day",
+   D:["2026-03-16","2026-03-17","2026-03-18","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-17","2026-04-18"],
+   N:["2026-03-21","2026-03-22","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01"],
+   AL:drange("2026-04-21","2026-04-25"),RO:[],X:drange("2026-04-19","2026-04-20")},
+
+  {n:14, name:"Almulhim, Shooq", role:"SN I", sec:"Day",
+   D:["2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-20","2026-04-22","2026-04-23","2026-04-24"],
+   N:["2026-03-21","2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01"],
+   AL:drange("2026-03-15","2026-03-17"),RO:[],X:drange("2026-03-18","2026-03-20")},
+
+  {n:15, name:"Alnefaie, Ibtihal", role:"SN I", sec:"Day",
+   D:["2026-04-04","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-13","2026-04-14","2026-04-19","2026-04-21","2026-04-24","2026-04-25"],
+   N:["2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01"],
+   AL:drange("2026-03-15","2026-03-19"),RO:[],X:drange("2026-03-20","2026-03-21")},
+
+  {n:16, name:"Alotaibi, Hanan", role:"SN I", sec:"Night",
+   D:["2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-17","2026-03-30","2026-03-31","2026-04-03","2026-04-04","2026-04-05","2026-04-09","2026-04-10","2026-04-11"],
+   AL:drange("2026-03-20","2026-03-26"),RO:[],X:["2026-03-18","2026-03-19",...drange("2026-03-27","2026-03-29")]},
+
+  {n:17, name:"Alrashdi, Lamyaa", role:"SN I", sec:"Day",
+   D:["2026-03-23","2026-03-24","2026-03-25","2026-03-29","2026-03-30","2026-03-31","2026-04-02","2026-04-03","2026-04-04"],
+   N:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   AL:drange("2026-03-15","2026-03-19"),RO:[],X:drange("2026-03-20","2026-03-22")},
+
+  {n:18, name:"Alshammari, Nawaf", role:"SN I", sec:"Night",
+   D:["2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04","2026-04-25"],
+   N:["2026-03-24","2026-03-25","2026-04-07","2026-04-08","2026-04-11","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   AL:drange("2026-03-15","2026-03-21"),RO:[],X:drange("2026-03-22","2026-03-23")},
+
+  {n:19, name:"Alshanqiti, Abdulkarim", role:"SN I", sec:"Night",
+   D:["2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01"],
+   N:["2026-03-17","2026-03-18","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   AL:[],RO:[],X:[]},
+
+  {n:20, name:"Alshehri, Maha", role:"SN I", sec:"Night",
+   D:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-17","2026-04-18","2026-04-22"],
+   N:["2026-03-15","2026-03-16","2026-03-25","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04"],
+   AL:drange("2026-03-18","2026-03-24"),RO:[],X:["2026-03-17"]},
+
+  {n:21, name:"Alsubeih, Rana", role:"SN I", sec:"Night",
+   D:["2026-03-28","2026-03-29","2026-04-01","2026-04-02"],
+   N:["2026-03-17","2026-03-18","2026-03-22","2026-03-23","2026-03-24","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-13","2026-04-14","2026-04-19","2026-04-20","2026-04-24","2026-04-25"],
+   AL:["2026-03-15"],RO:["2026-03-25","2026-03-26"],X:["2026-03-16"]},
+
+  {n:22, name:"Binti Othman, Hamizah", role:"SN I", sec:"Day",
+   D:["2026-04-11","2026-04-12","2026-04-15","2026-04-16","2026-04-19","2026-04-20"],
+   N:["2026-04-07","2026-04-08","2026-04-23","2026-04-24","2026-04-25"],
+   AL:drange("2026-03-16","2026-04-04"),RO:[],X:["2026-03-15",...drange("2026-04-05","2026-04-06")]},
+
+  {n:23, name:"Bobis, Ariane", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04"],
+   N:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22","2026-04-23"],
+   AL:[],RO:["2026-03-26","2026-03-27","2026-03-28"],X:[]},
+
+  {n:24, name:"Chellappa, Viji", role:"SN I", sec:"Night",
+   D:["2026-03-16","2026-03-17","2026-03-20","2026-03-21","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01"],
+   N:["2026-04-04","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   AL:[],RO:[],X:[]},
+
+  {n:25, name:"Danas, Elvira", role:"SN I", sec:"Night",
+   D:["2026-03-16","2026-03-17","2026-03-18","2026-03-21","2026-03-22","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01","2026-04-03"],
+   N:["2026-04-05","2026-04-06","2026-04-10","2026-04-11","2026-04-12","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   AL:[],RO:[],X:[]},
+
+  {n:26, name:"Dela Rosa, Ma Jesanica", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30"],
+   N:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   AL:drange("2026-04-02","2026-04-04"),RO:[],X:[...drange("2026-03-31","2026-04-01"),...drange("2026-04-05","2026-04-06")]},
+
+  {n:27, name:"Eezaldeen, Wejdan", role:"SN I", sec:"Day",
+   D:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   N:["2026-03-19","2026-03-23","2026-03-24","2026-03-25","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04"],
+   AL:drange("2026-03-15","2026-03-17"),RO:[],X:["2026-03-18"]},
+
+  {n:28, name:"Gallano, Dolly", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22","2026-04-23"],
+   N:["2026-03-19","2026-03-20","2026-03-21","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04"],
+   AL:[],RO:["2026-03-27","2026-03-28"],X:[]},
+
+  {n:29, name:"Ido, Jimlex", role:"SN I", sec:"Day",
+   D:["2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-18","2026-03-19","2026-03-20","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-04-01","2026-04-02"],
+   AL:[],RO:["2026-03-27","2026-03-28","2026-03-31"],X:[]},
+
+  {n:30, name:"Jore, Maripaz", role:"SN I", sec:"Night",
+   D:["2026-03-15","2026-03-16"],
+   N:["2026-03-19","2026-03-20","2026-03-24","2026-03-25","2026-03-27","2026-03-28","2026-03-29","2026-04-02","2026-04-03","2026-04-04","2026-04-07","2026-04-08","2026-04-09"],
+   AL:drange("2026-04-12","2026-04-22"),RO:[],X:[...drange("2026-04-10","2026-04-11"),...drange("2026-04-23","2026-04-25")]},
+
+  {n:31, name:"Joseph, Dency", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-04-01"],
+   N:[],AL:drange("2026-04-05","2026-04-25"),RO:[],X:drange("2026-04-02","2026-04-04")},
+
+  {n:32, name:"Kanniah, Shaleny", role:"SN I", sec:"Night",
+   D:["2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-25"],
+   N:["2026-04-14","2026-04-15","2026-04-17","2026-04-18","2026-04-19","2026-04-22","2026-04-23","2026-04-24"],
+   AL:drange("2026-03-29","2026-04-11"),RO:["2026-03-24"],X:[...drange("2026-03-26","2026-03-28"),...drange("2026-04-12","2026-04-13")]},
+
+  {n:33, name:"Kumar, Priyadarshini Vijaya", role:"SN I", sec:"Day",
+   D:["2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01","2026-04-02"],
+   N:["2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20"],
+   AL:drange("2026-04-24","2026-04-25"),RO:[],X:drange("2026-04-21","2026-04-23")},
+
+  {n:34, name:"M Hussein, Halimatun Sadiah", role:"SN I", sec:"Day",
+   D:["2026-03-17","2026-03-18","2026-03-23","2026-03-24","2026-03-27","2026-03-28","2026-03-29","2026-03-31","2026-04-04","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11"],
+   N:[],AL:drange("2026-04-14","2026-04-25"),RO:[],X:drange("2026-04-12","2026-04-13")},
+
+  {n:35, name:"Macalanggan, Nora Niah", role:"SN I", sec:"Night",
+   D:[],
+   N:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-30"],
+   AL:drange("2026-04-02","2026-04-25"),RO:["2026-03-29"],X:drange("2026-03-31","2026-04-01")},
+
+  {n:36, name:"Mohd Radzi, Faten Nadiah", role:"SN I", sec:"Night",
+   D:["2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-04-01","2026-04-02"],
+   N:["2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-21","2026-04-24","2026-04-25"],
+   AL:[],RO:[],X:[]},
+
+  {n:37, name:"Mohd Rashid, Siti Rosma Atiqah", role:"SN I", sec:"Night",
+   D:[],
+   N:["2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04","2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22","2026-04-25"],
+   AL:drange("2026-03-15","2026-03-25"),RO:["2026-04-06","2026-04-09"],X:drange("2026-03-26","2026-03-28")},
+
+  {n:38, name:"Mohtar, Mouayad", role:"SN I", sec:"Day",
+   D:["2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-17","2026-03-18","2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01"],
+   AL:[],RO:[],X:[]},
+
+  {n:39, name:"Mooney, Charlene", role:"SN I", sec:"Day",
+   D:["2026-03-17","2026-03-18","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-04-05","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-21","2026-04-22"],
+   N:[],AL:drange("2026-03-31","2026-04-01"),RO:["2026-04-06","2026-04-23","2026-04-24","2026-04-25"],
+   X:[...drange("2026-03-29","2026-03-30"),...drange("2026-04-02","2026-04-04")]},
+
+  {n:40, name:"Rayzah, Raghad", role:"SN I", sec:"Day",
+   D:["2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-17","2026-03-18","2026-03-22","2026-03-23","2026-03-27","2026-03-28","2026-03-29","2026-04-01","2026-04-02"],
+   AL:[],RO:["2026-03-24"],X:[]},
+
+  {n:41, name:"Sabado, Estifanny", role:"SN I", sec:"Night",
+   D:["2026-03-24","2026-03-25","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04","2026-04-06","2026-04-07","2026-04-08"],
+   N:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   AL:[],RO:["2026-03-27","2026-03-28"],X:[]},
+
+  {n:42, name:"Sim, Nellen", role:"SN I", sec:"Night",
+   D:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22","2026-04-23"],
+   N:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-27","2026-03-28","2026-03-29","2026-04-02","2026-04-03","2026-04-04"],
+   AL:[],RO:[],X:[]},
+
+  {n:43, name:"Sujatha, Sinchu Soman", role:"SN I", sec:"Night",
+   D:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   N:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-03-31","2026-04-02","2026-04-03","2026-04-04"],
+   AL:[],RO:["2026-04-06"],X:[]},
+
+  {n:44, name:"Thomas, Leema", role:"SN I", sec:"Night",
+   D:["2026-03-17","2026-03-18","2026-03-22","2026-03-23"],
+   N:["2026-04-09","2026-04-10","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   AL:drange("2026-03-26","2026-04-06"),RO:[],X:[...drange("2026-03-24","2026-03-25"),...drange("2026-04-07","2026-04-08")]},
+
+  {n:45, name:"Trillana, Catherine Mae", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-03-18","2026-03-19","2026-03-20","2026-03-24","2026-03-25","2026-03-26","2026-03-30","2026-03-31","2026-04-01"],
+   N:["2026-04-05","2026-04-06","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   AL:drange("2026-04-09","2026-04-11"),RO:["2026-03-27","2026-03-28"],X:[...drange("2026-04-07","2026-04-08"),...drange("2026-04-12","2026-04-13")]},
+
+  {n:46, name:"Valdez, Sheia Grazielle", role:"SN I", sec:"Night",
+   D:["2026-03-24","2026-03-25","2026-03-29","2026-04-01","2026-04-02","2026-04-03"],
+   N:["2026-03-15","2026-03-16","2026-03-17","2026-03-21","2026-04-06","2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22","2026-04-23"],
+   AL:[],RO:["2026-03-26","2026-03-30","2026-03-31"],X:[]},
+
+  {n:47, name:"Vatumalai, Nanthini", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-13","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-19","2026-03-20","2026-03-22","2026-03-23","2026-03-26","2026-03-27","2026-03-28","2026-03-31","2026-04-01"],
+   AL:[],RO:[],X:[]},
+
+  {n:48, name:"Ybanez, Jay Ann", role:"SN I", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-25","2026-04-02","2026-04-03","2026-04-04"],
+   N:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   AL:drange("2026-03-27","2026-03-31"),RO:[],X:["2026-03-26","2026-04-01"]},
+
+  {n:49, name:"Alonsagay, Myra", role:"CA", sec:"Night",
+   D:["2026-03-31","2026-04-01"],
+   N:["2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   AL:drange("2026-03-17","2026-03-28"),RO:[],X:[...drange("2026-03-15","2026-03-16"),...drange("2026-03-29","2026-03-30")]},
+
+  {n:50, name:"Ferrer, Ana Liza", role:"CA", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-22","2026-03-23","2026-03-24","2026-03-28","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04"],
+   N:["2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   AL:[],RO:["2026-03-26","2026-03-27"],X:[]},
+
+  {n:51, name:"Mahinay, Rona Victoria", role:"CA", sec:"Night",
+   D:["2026-04-07","2026-04-09","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   N:["2026-03-15","2026-03-16","2026-03-19","2026-03-20","2026-03-21","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04"],
+   AL:[],RO:["2026-03-27","2026-03-28"],X:[]},
+
+  {n:52, name:"Moreno, Jane", role:"CA", sec:"Day",
+   D:["2026-03-17","2026-03-18","2026-03-19","2026-03-21","2026-03-23","2026-03-24","2026-03-25"],
+   N:[],AL:drange("2026-03-29","2026-04-25"),RO:[],X:drange("2026-03-26","2026-03-28")},
+
+  {n:53, name:"Salutem, Divina", role:"CA", sec:"Day",
+   D:["2026-03-15","2026-03-16","2026-03-17","2026-03-20","2026-03-21","2026-03-22","2026-03-25","2026-03-26","2026-03-27","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04","2026-04-07","2026-04-08","2026-04-12","2026-04-13","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   N:[],AL:[],RO:["2026-03-28"],X:[]},
+
+  {n:54, name:"Tandih, Raicel", role:"CA", sec:"Day",
+   D:["2026-03-31","2026-04-01","2026-04-05","2026-04-06","2026-04-09","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-17","2026-03-18","2026-03-22","2026-03-23","2026-03-26","2026-03-27"],
+   AL:[],RO:[],X:[]},
+
+  {n:55, name:"Vergel, Carmela Dawn", role:"CA", sec:"Day",
+   D:["2026-03-18","2026-04-05","2026-04-06","2026-04-08","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:["2026-03-28","2026-03-31","2026-04-01"],
+   AL:drange("2026-03-19","2026-03-25"),RO:["2026-04-09"],X:drange("2026-03-26","2026-03-27")},
+
+  {n:56, name:"Alaklabi, Bushra", role:"WC", sec:"Other",
+   D:["2026-03-31","2026-04-01","2026-04-05","2026-04-06","2026-04-10","2026-04-11","2026-04-14","2026-04-15","2026-04-19","2026-04-20","2026-04-23","2026-04-24","2026-04-25"],
+   N:[],AL:drange("2026-03-15","2026-03-28"),RO:[],X:drange("2026-03-29","2026-03-30")},
+
+  {n:57, name:"Mohammad, Faiza", role:"WC", sec:"Other",
+   D:["2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-04-02","2026-04-03","2026-04-04","2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   N:[],AL:[],RO:[],X:[]},
+
+  {n:58, name:"Alanazi, Razan", role:"Defa", sec:"Other",
+   D:["2026-04-02","2026-04-03","2026-04-04","2026-04-08","2026-04-12","2026-04-16","2026-04-17","2026-04-18","2026-04-21","2026-04-22"],
+   N:["2026-03-15","2026-03-16","2026-03-22","2026-03-23","2026-03-24"],
+   AL:drange("2026-03-26","2026-03-31"),RO:[],X:["2026-03-25","2026-04-01"]},
+
+  {n:59, name:"Alswair, Rabab", role:"Defa", sec:"Other",
+   D:["2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23"],
+   N:[],AL:[],RO:[],X:[]}
+];
+
+function fmt(d){return d.toISOString().slice(0,10);}
+
+const secColor = {
+  "Mgmt":  {bg:"#0e7c76", light:"#d8f3f1"},
+  "Day":   {bg:"#1c6eb0", light:"#ddeeff"},
+  "Night": {bg:"#4a4b9c", light:"#e8e8f9"},
+  "Other": {bg:"#1a7a5e", light:"#d8f7ef"}
+};
+
+const cellStyle = {
+  D:   {bg:"#ddeeff", color:"#1c6eb0", label:"D"},
+  N:   {bg:"#e8e8f9", color:"#4a4b9c", label:"N"},
+  AL:  {bg:"#fff3d9", color:"#bf7b0c", label:"AL"},
+  RO:  {bg:"#f0f0f0", color:"#5a6b82", label:"RO"},
+  X:   {bg:"#ffeaea", color:"#c0392b", label:"X"},
+  "": {bg:"transparent", color:"#ccc", label:"—"}
+};
+
+const tbl = document.getElementById("gridTable");
+
+// Build lookup sets per employee
+EMP.forEach(e=>{
+  e._map={};
+  e.D.forEach(d=>e._map[d]="D");
+  e.N.forEach(d=>e._map[d]="N");
+  e.AL.forEach(d=>e._map[d]="AL");
+  e.RO.forEach(d=>e._map[d]="RO");
+  e.X.forEach(d=>e._map[d]="X");
+});
+
+// Month grouping headers
+const mar = allDates.filter(d=>d.getMonth()===2);
+const apr = allDates.filter(d=>d.getMonth()===3);
+
+// Build header rows
+const thead = document.createElement("thead");
+
+// Month row
+const mrow = document.createElement("tr");
+["","#","Name","Role","Sec"].forEach(t=>{
+  const th=document.createElement("th");
+  th.textContent=t; th.style.cssText="background:#0d2137;color:rgba(255,255,255,.85);padding:7px 8px;font-size:10px;letter-spacing:.5px;white-space:nowrap;position:sticky;left:0;z-index:3;border-right:1px solid rgba(255,255,255,.1)";
+  if(t==="Name") th.style.minWidth="160px";
+  mrow.appendChild(th);
+});
+let mth=document.createElement("th");
+mth.colSpan=mar.length; mth.textContent="MARCH 2026";
+mth.style.cssText="background:#1c4f72;color:#fff;text-align:center;padding:7px 4px;font-size:11px;font-weight:700;letter-spacing:1px;border-right:2px solid #fff";
+mrow.appendChild(mth);
+mth=document.createElement("th");
+mth.colSpan=apr.length; mth.textContent="APRIL 2026";
+mth.style.cssText="background:#143452;color:#fff;text-align:center;padding:7px 4px;font-size:11px;font-weight:700;letter-spacing:1px";
+mrow.appendChild(mth);
+thead.appendChild(mrow);
+
+// Day-of-week row
+const dnrow = document.createElement("tr");
+["","","","",""].forEach(()=>{
+  const th=document.createElement("th");
+  th.style.cssText="background:#0d2137;padding:4px 8px;position:sticky;left:0;z-index:3;border-right:1px solid rgba(255,255,255,.06)";
+  dnrow.appendChild(th);
+});
+allDates.forEach((d,i)=>{
+  const th=document.createElement("th");
+  th.textContent=dayNames[d.getDay()];
+  const isFri=d.getDay()===5, isSat=d.getDay()===6;
+  th.style.cssText=`background:${isFri||isSat?"#1e3a55":"#102a40"};color:${isFri||isSat?"#f0a050":"rgba(255,255,255,.6)"};padding:3px 2px;font-size:9px;text-align:center;min-width:28px;max-width:28px;border-right:${i===mar.length-1?"2px solid #4a9fb5":"1px solid rgba(255,255,255,.06)"}`;
+  dnrow.appendChild(th);
+});
+thead.appendChild(dnrow);
+
+// Date number row
+const ddrow = document.createElement("tr");
+["","","","",""].forEach(()=>{
+  const th=document.createElement("th");
+  th.style.cssText="background:#0d2137;padding:4px 8px;position:sticky;left:0;z-index:3;border-right:1px solid rgba(255,255,255,.06)";
+  ddrow.appendChild(th);
+});
+allDates.forEach((d,i)=>{
+  const th=document.createElement("th");
+  th.textContent=d.getDate();
+  const isFri=d.getDay()===5, isSat=d.getDay()===6;
+  th.style.cssText=`background:${isFri||isSat?"#1e3a55":"#102a40"};color:${isFri||isSat?"#f0a050":"rgba(255,255,255,.75)"};padding:4px 2px;font-size:10px;font-weight:700;text-align:center;min-width:28px;max-width:28px;border-right:${i===mar.length-1?"2px solid #4a9fb5":"1px solid rgba(255,255,255,.06)"}`;
+  ddrow.appendChild(th);
+});
+thead.appendChild(ddrow);
+tbl.appendChild(thead);
+
+// Section order
+const secOrder=["Mgmt","Day","Night","Other"];
+const secLabel={"Mgmt":"Management / Admin","Day":"Day Shift","Night":"Night Shift","Other":"Other Roles"};
+
+const tbody=document.createElement("tbody");
+
+secOrder.forEach(sec=>{
+  const emps=EMP.filter(e=>e.sec===sec);
+  // Section separator row
+  const sepRow=document.createElement("tr");
+  const sepTd=document.createElement("td");
+  sepTd.colSpan=5+allDates.length;
+  sepTd.style.cssText=`background:${secColor[sec].bg};color:#fff;padding:6px 16px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase`;
+  sepTd.textContent=`▌  ${secLabel[sec]}  (${emps.length} staff)`;
+  sepRow.appendChild(sepTd);
+  tbody.appendChild(sepRow);
+
+  emps.forEach((e,ei)=>{
+    const tr=document.createElement("tr");
+    tr.style.background=ei%2===0?"#fff":"#f8fafd";
+
+    // Sticky columns
+    const stickyVals=[e.n, e.n+"", e.name, e.role, e.sec];
+    const stickyW=["28px","28px","160px","42px","40px"];
+    stickyVals.forEach((v,si)=>{
+      const td=document.createElement("td");
+      if(si===0){td.innerHTML=""; }
+      else if(si===2){td.innerHTML=`<strong style="font-size:11.5px">${v}</strong>`;}
+      else if(si===3){
+        const roleColors={
+          "AHN":"pill-mgmt","CI":"pill-mgmt","SN I":"pill-role",
+          "CA":"pill-role","CLN":"pill-cln","WC":"pill-wc","Defa":"pill-defa"
+        };
+        td.innerHTML=`<span class="pill ${roleColors[v]||'pill-gray'}" style="font-size:10px">${v}</span>`;
+      }
+      else if(si===4){
+        td.innerHTML=`<span style="font-size:9.5px;font-weight:600;color:${secColor[e.sec].bg}">${v==="Mgmt"?"Mgt":v}</span>`;
+      }
+      else{td.textContent=v;}
+      td.style.cssText=`padding:5px 6px;white-space:nowrap;border-bottom:1px solid #edf0f6;min-width:${stickyW[si]};position:sticky;background:inherit;z-index:2;border-right:1px solid #e2e8f0`;
+      if(si===0) td.style.left="0px";
+      else if(si===1) td.style.left="28px";
+      else if(si===2) td.style.left="56px";
+      else if(si===3) td.style.left="216px";
+      else if(si===4) td.style.left="258px";
+      tr.appendChild(td);
+    });
+
+    // Date cells
+    allDates.forEach((d,di)=>{
+      const key=fmt(d);
+      const code=e._map[key]||"";
+      const cs=cellStyle[code];
+      const td=document.createElement("td");
+      td.textContent=cs.label;
+      const isFri=d.getDay()===5, isSat=d.getDay()===6;
+      const bgOver=isFri||isSat?"rgba(255,200,100,.08)":"";
+      td.style.cssText=`text-align:center;padding:4px 1px;font-size:10px;font-weight:700;color:${cs.color};background:${code?cs.bg:bgOver||"transparent"};border-bottom:1px solid #edf0f6;border-right:${di===mar.length-1?"2px solid #b0d0e8":"1px solid #edf0f6"};min-width:28px;max-width:28px`;
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+});
+
+tbl.appendChild(tbody);
+})();
+</script>
+
+<script>
+const employees = [
+  { n:1,  name:"Omar, Sadal",                   role:"AHN",  fte:"1.00", pg:1, sec:"Mgmt",  secPill:'<span class="pill pill-mgmt">Mgmt</span>',   rolePill:'<span class="pill pill-mgmt">AHN</span>',  tw:30, d:30, nt:0,  al:0,  ro:0, off:0,  bl:12,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed) · 02 Apr (Thu) · 05 Apr (Sun) · 06 Apr (Mon) · 07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"none", alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:2,  name:"Qurayah, Ibrahim",               role:"AHN",  fte:"1.00", pg:1, sec:"Mgmt",  secPill:'<span class="pill pill-mgmt">Mgmt</span>',   rolePill:'<span class="pill pill-mgmt">AHN</span>',  tw:20, d:20, nt:0,  al:12, ro:0, off:2,  bl:8,
+    dayDates:"29 Mar (Sun) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed) · 02 Apr (Thu) · 05 Apr (Sun) · 06 Apr (Mon) · 07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"none", alPeriods:"15 Mar → 26 Mar", roDates:"none", offMarkers:"27 Mar (Fri) → 28 Mar (Sat)" },
+
+  { n:3,  name:"Altiti, Ibrahim",                role:"CI",   fte:"1.00", pg:1, sec:"Mgmt",  secPill:'<span class="pill pill-mgmt">Mgmt</span>',   rolePill:'<span class="pill pill-mgmt">CI</span>',   tw:30, d:30, nt:0,  al:0,  ro:0, off:0,  bl:12,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed) · 02 Apr (Thu) · 05 Apr (Sun) · 06 Apr (Mon) · 07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"none", alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:4,  name:"Shukr, Walaa",                   role:"CLN",  fte:"1.00", pg:1, sec:"Other", secPill:'<span class="pill pill-green">Other</span>',  rolePill:'<span class="pill pill-cln">CLN</span>',   tw:30, d:30, nt:0,  al:0,  ro:0, off:0,  bl:12,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed) · 02 Apr (Thu) · 05 Apr (Sun) · 06 Apr (Mon) · 07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"none", alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:5,  name:"Abdul Razak, Nur Hasimah",       role:"SN I", fte:"1.00", pg:1, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:2,  d:2,  nt:0,  al:34, ro:0, off:5,  bl:1,
+    dayDates:"15 Mar (Sun) · 24 Apr (Fri)",
+    nightDates:"none", alPeriods:"18 Mar → 20 Apr", roDates:"none", offMarkers:"16 Mar → 17 Mar · 21 Apr → 23 Apr" },
+
+  { n:6,  name:"Abraham, Linu",                  role:"SN I", fte:"1.00", pg:1, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:11, d:11, nt:0,  al:21, ro:0, off:3,  bl:7,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 20 Mar (Fri) · 21 Mar (Sat) · 22 Mar (Sun) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed)",
+    nightDates:"none", alPeriods:"05 Apr → 25 Apr", roDates:"none", offMarkers:"02 Apr → 04 Apr" },
+
+  { n:7,  name:"Alabboud, Haia",                 role:"SN I", fte:"1.00", pg:1, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:14, d:14, nt:0,  al:12, ro:0, off:5,  bl:11,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 07 Apr (Tue) · 08 Apr (Wed)",
+    nightDates:"none", alPeriods:"12 Apr → 23 Apr", roDates:"none", offMarkers:"09 Apr → 11 Apr · 24 Apr → 25 Apr" },
+
+  { n:8,  name:"Alabdan, Maha",                  role:"SN I", fte:"1.00", pg:1, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:18, d:7,  nt:11, al:3,  ro:0, off:2,  bl:19,
+    dayDates:"22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 30 Mar (Mon) · 31 Mar (Tue)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 03 Apr (Fri) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 20 Apr (Mon)",
+    alPeriods:"23 Apr → 25 Apr", roDates:"none", offMarkers:"21 Apr → 22 Apr" },
+
+  { n:9,  name:"Alamri, Shuaa",                  role:"SN I", fte:"1.00", pg:1, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:17, d:13, nt:4,  al:9,  ro:0, off:3,  bl:13,
+    dayDates:"05 Apr (Sun) · 06 Apr (Mon) · 07 Apr (Tue) · 11 Apr (Sat) · 12 Apr (Sun) · 13 Apr (Mon) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"20 Mar → 28 Mar", roDates:"none", offMarkers:"19 Mar (Thu) · 29 Mar → 30 Mar" },
+
+  { n:10, name:"Aldughayshim, Shahad",            role:"SN I", fte:"1.00", pg:1, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:17, d:10, nt:7,  al:7,  ro:0, off:5,  bl:13,
+    dayDates:"31 Mar (Tue) · 01 Apr (Wed) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 23 Apr (Thu) · 25 Apr (Sat)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat)",
+    alPeriods:"05 Apr → 11 Apr", roDates:"none", offMarkers:"02 Apr → 04 Apr · 12 Apr → 13 Apr" },
+
+  { n:11, name:"Alghamdi, Anas",                 role:"SN I", fte:"1.00", pg:1, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:14, d:11, nt:3,  al:14, ro:0, off:5,  bl:9,
+    dayDates:"07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 18 Mar (Wed)",
+    alPeriods:"22 Mar → 04 Apr", roDates:"none", offMarkers:"19 Mar → 21 Mar · 05 Apr → 06 Apr" },
+
+  { n:12, name:"Alhumaid, Layan",                role:"SN I", fte:"1.00", pg:1, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:15, d:10, nt:5,  al:9,  ro:2, off:4,  bl:12,
+    dayDates:"07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"18 Mar → 26 Mar", roDates:"03 Apr (Fri) · 04 Apr (Sat)", offMarkers:"17 Mar (Tue) · 27 Mar → 29 Mar" },
+
+  { n:13, name:"Alisoso, Chantily",              role:"SN I", fte:"1.00", pg:2, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:19, d:12, nt:7,  al:5,  ro:0, off:2,  bl:16,
+    dayDates:"16 Mar (Mon) · 17 Mar (Tue) · 18 Mar (Wed) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 17 Apr (Fri) · 18 Apr (Sat)",
+    nightDates:"21 Mar (Sat) · 22 Mar (Sun) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"21 Apr → 25 Apr", roDates:"none", offMarkers:"19 Apr → 20 Apr" },
+
+  { n:14, name:"Almulhim, Shooq",               role:"SN I", fte:"1.00", pg:2, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:18, d:10, nt:8,  al:3,  ro:0, off:3,  bl:18,
+    dayDates:"05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 20 Apr (Mon) · 22 Apr (Wed) · 23 Apr (Thu) · 24 Apr (Fri)",
+    nightDates:"21 Mar (Sat) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"15 Mar → 17 Mar", roDates:"none", offMarkers:"18 Mar → 20 Mar" },
+
+  { n:15, name:"Alnefaie, Ibtihal",             role:"SN I", fte:"1.00", pg:2, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:18, d:11, nt:7,  al:5,  ro:0, off:2,  bl:17,
+    dayDates:"04 Apr (Sat) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 13 Apr (Mon) · 14 Apr (Tue) · 19 Apr (Sun) · 21 Apr (Tue) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"15 Mar → 19 Mar", roDates:"none", offMarkers:"20 Mar → 21 Mar" },
+
+  { n:16, name:"Alotaibi, Hanan",               role:"SN I", fte:"1.00", pg:2, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:16, d:7,  nt:9,  al:7,  ro:0, off:5,  bl:14,
+    dayDates:"14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"17 Mar (Tue) · 30 Mar (Mon) · 31 Mar (Tue) · 03 Apr (Fri) · 04 Apr (Sat) · 05 Apr (Sun) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat)",
+    alPeriods:"20 Mar → 26 Mar", roDates:"none", offMarkers:"18 Mar → 19 Mar · 27 Mar → 29 Mar" },
+
+  { n:17, name:"Alrashdi, Lamyaa",              role:"SN I", fte:"1.00", pg:2, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:18, d:9,  nt:9,  al:5,  ro:0, off:3,  bl:16,
+    dayDates:"23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed) · 29 Mar (Sun) · 30 Mar (Mon) · 31 Mar (Tue) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    nightDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    alPeriods:"15 Mar → 19 Mar", roDates:"none", offMarkers:"20 Mar → 22 Mar" },
+
+  { n:18, name:"Alshammari, Nawaf",             role:"SN I", fte:"1.00", pg:2, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:18, d:6,  nt:12, al:7,  ro:0, off:2,  bl:15,
+    dayDates:"29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 25 Apr (Sat)",
+    nightDates:"24 Mar (Tue) · 25 Mar (Wed) · 07 Apr (Tue) · 08 Apr (Wed) · 11 Apr (Sat) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    alPeriods:"15 Mar → 21 Mar", roDates:"none", offMarkers:"22 Mar → 23 Mar" },
+
+  { n:19, name:"Alshanqiti, Abdulkarim",        role:"SN I", fte:"1.00", pg:2, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:21, d:7,  nt:14, al:0,  ro:0, off:0,  bl:21,
+    dayDates:"22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:20, name:"Alshehri, Maha",                role:"SN I", fte:"1.00", pg:2, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:15, d:7,  nt:8,  al:7,  ro:0, off:1,  bl:19,
+    dayDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 17 Apr (Fri) · 18 Apr (Sat) · 22 Apr (Wed)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 25 Mar (Wed) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    alPeriods:"18 Mar → 24 Mar", roDates:"none", offMarkers:"17 Mar (Tue)" },
+
+  { n:21, name:"Alsubeih, Rana",                role:"SN I", fte:"1.00", pg:2, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:20, d:4,  nt:16, al:1,  ro:2, off:1,  bl:18,
+    dayDates:"28 Mar (Sat) · 29 Mar (Sun) · 01 Apr (Wed) · 02 Apr (Thu)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 13 Apr (Mon) · 14 Apr (Tue) · 19 Apr (Sun) · 20 Apr (Mon) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"15 Mar (Sun)", roDates:"25 Mar (Wed) · 26 Mar (Thu)", offMarkers:"16 Mar (Mon)" },
+
+  { n:22, name:"Binti Othman, Hamizah",         role:"SN I", fte:"1.00", pg:2, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:11, d:6,  nt:5,  al:20, ro:0, off:3,  bl:8,
+    dayDates:"11 Apr (Sat) · 12 Apr (Sun) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon)",
+    nightDates:"07 Apr (Tue) · 08 Apr (Wed) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"16 Mar → 04 Apr", roDates:"none", offMarkers:"15 Mar (Sun) · 05 Apr → 06 Apr" },
+
+  { n:23, name:"Bobis, Ariane",                 role:"SN I", fte:"1.00", pg:2, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:22, d:12, nt:10, al:0,  ro:3, off:0,  bl:17,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    nightDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    alPeriods:"none", roDates:"26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat)", offMarkers:"none" },
+
+  { n:24, name:"Chellappa, Viji",               role:"SN I", fte:"1.00", pg:2, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:22, d:9,  nt:13, al:0,  ro:0, off:0,  bl:20,
+    dayDates:"16 Mar (Mon) · 17 Mar (Tue) · 20 Mar (Fri) · 21 Mar (Sat) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    nightDates:"04 Apr (Sat) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:25, name:"Danas, Elvira",                 role:"SN I", fte:"1.00", pg:2, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:23, d:11, nt:12, al:0,  ro:0, off:0,  bl:19,
+    dayDates:"16 Mar (Mon) · 17 Mar (Tue) · 18 Mar (Wed) · 21 Mar (Sat) · 22 Mar (Sun) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed) · 03 Apr (Fri)",
+    nightDates:"05 Apr (Sun) · 06 Apr (Mon) · 10 Apr (Fri) · 11 Apr (Sat) · 12 Apr (Sun) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:26, name:"Dela Rosa, Ma Jesanica",        role:"SN I", fte:"1.00", pg:2, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:19, d:10, nt:9,  al:3,  ro:0, off:4,  bl:16,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon)",
+    nightDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    alPeriods:"02 Apr → 04 Apr", roDates:"none", offMarkers:"31 Mar → 01 Apr · 05 Apr → 06 Apr" },
+
+  { n:27, name:"Eezaldeen, Wejdan",             role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:18, d:9,  nt:9,  al:3,  ro:0, off:1,  bl:20,
+    dayDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"19 Mar (Thu) · 23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    alPeriods:"15 Mar → 17 Mar", roDates:"none", offMarkers:"18 Mar (Wed)" },
+
+  { n:28, name:"Gallano, Dolly",                role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:22, d:12, nt:10, al:0,  ro:2, off:0,  bl:18,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    alPeriods:"none", roDates:"27 Mar (Fri) · 28 Mar (Sat)", offMarkers:"none" },
+
+  { n:29, name:"Ido, Jimlex",                   role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:22, d:12, nt:10, al:0,  ro:3, off:0,  bl:17,
+    dayDates:"05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"18 Mar (Wed) · 19 Mar (Thu) · 20 Mar (Fri) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 01 Apr (Wed) · 02 Apr (Thu)",
+    alPeriods:"none", roDates:"27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue)", offMarkers:"none" },
+
+  { n:30, name:"Jore, Maripaz",                 role:"SN I", fte:"1.00", pg:3, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:15, d:2,  nt:13, al:11, ro:0, off:5,  bl:11,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon)",
+    nightDates:"19 Mar (Thu) · 20 Mar (Fri) · 24 Mar (Tue) · 25 Mar (Wed) · 27 Mar (Fri) · 28 Mar (Sat) · 29 Mar (Sun) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu)",
+    alPeriods:"12 Apr → 22 Apr", roDates:"none", offMarkers:"10 Apr → 11 Apr · 23 Apr → 25 Apr" },
+
+  { n:31, name:"Joseph, Dency",                 role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:11, d:11, nt:0,  al:21, ro:0, off:3,  bl:7,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 01 Apr (Wed)",
+    nightDates:"none", alPeriods:"05 Apr → 25 Apr", roDates:"none", offMarkers:"02 Apr → 04 Apr" },
+
+  { n:32, name:"Kanniah, Shaleny",              role:"SN I", fte:"1.00", pg:3, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:14, d:6,  nt:8,  al:14, ro:1, off:5,  bl:8,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 25 Mar (Wed)",
+    nightDates:"14 Apr (Tue) · 15 Apr (Wed) · 17 Apr (Fri) · 18 Apr (Sat) · 19 Apr (Sun) · 22 Apr (Wed) · 23 Apr (Thu) · 24 Apr (Fri)",
+    alPeriods:"29 Mar → 11 Apr", roDates:"24 Mar (Tue)", offMarkers:"26 Mar → 28 Mar · 12 Apr → 13 Apr" },
+
+  { n:33, name:"Kumar, Priyadarshini Vijaya",   role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:20, d:11, nt:9,  al:2,  ro:0, off:3,  bl:17,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed) · 02 Apr (Thu)",
+    nightDates:"05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon)",
+    alPeriods:"24 Apr → 25 Apr", roDates:"none", offMarkers:"21 Apr → 23 Apr" },
+
+  { n:34, name:"M Hussein, Halimatun Sadiah",   role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:14, d:14, nt:0,  al:12, ro:0, off:2,  bl:14,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 23 Mar (Mon) · 24 Mar (Tue) · 27 Mar (Fri) · 28 Mar (Sat) · 29 Mar (Sun) · 31 Mar (Tue) · 04 Apr (Sat) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat)",
+    nightDates:"none", alPeriods:"14 Apr → 25 Apr", roDates:"none", offMarkers:"12 Apr → 13 Apr" },
+
+  { n:35, name:"Macalanggan, Nora Niah",        role:"SN I", fte:"1.00", pg:3, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:8,  d:0,  nt:8,  al:24, ro:1, off:2,  bl:7,
+    dayDates:"none",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 30 Mar (Mon)",
+    alPeriods:"02 Apr → 25 Apr", roDates:"29 Mar (Sun)", offMarkers:"31 Mar → 01 Apr" },
+
+  { n:36, name:"Mohd Radzi, Faten Nadiah",      role:"SN I", fte:"1.00", pg:3, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:21, d:9,  nt:12, al:0,  ro:0, off:0,  bl:21,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 01 Apr (Wed) · 02 Apr (Thu)",
+    nightDates:"05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:37, name:"Mohd Rashid, Siti Rosma Atiqah",role:"SN I", fte:"1.00", pg:3, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:15, d:0,  nt:15, al:11, ro:2, off:3,  bl:11,
+    dayDates:"none",
+    nightDates:"29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed) · 25 Apr (Sat)",
+    alPeriods:"15 Mar → 25 Mar", roDates:"06 Apr (Mon) · 09 Apr (Thu)", offMarkers:"26 Mar → 28 Mar" },
+
+  { n:38, name:"Mohtar, Mouayad",               role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:21, d:12, nt:9,  al:0,  ro:0, off:0,  bl:21,
+    dayDates:"05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:39, name:"Mooney, Charlene",              role:"SN I", fte:"1.00", pg:3, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:20, d:20, nt:0,  al:2,  ro:4, off:5,  bl:11,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 20 Mar (Fri) · 21 Mar (Sat) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 05 Apr (Sun) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"none", alPeriods:"31 Mar → 01 Apr", roDates:"06 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)", offMarkers:"29 Mar → 30 Mar · 02 Apr → 04 Apr" },
+
+  { n:40, name:"Rayzah, Raghad",                role:"SN I", fte:"1.00", pg:4, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:21, d:12, nt:9,  al:0,  ro:1, off:0,  bl:20,
+    dayDates:"05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 22 Mar (Sun) · 23 Mar (Mon) · 27 Mar (Fri) · 28 Mar (Sat) · 29 Mar (Sun) · 01 Apr (Wed) · 02 Apr (Thu)",
+    alPeriods:"none", roDates:"24 Mar (Tue)", offMarkers:"none" },
+
+  { n:41, name:"Sabado, Estifanny",             role:"SN I", fte:"1.00", pg:4, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:22, d:10, nt:12, al:0,  ro:2, off:0,  bl:18,
+    dayDates:"24 Mar (Tue) · 25 Mar (Wed) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 06 Apr (Mon) · 07 Apr (Tue) · 08 Apr (Wed)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    alPeriods:"none", roDates:"27 Mar (Fri) · 28 Mar (Sat)", offMarkers:"none" },
+
+  { n:42, name:"Sim, Nellen",                   role:"SN I", fte:"1.00", pg:4, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:23, d:10, nt:13, al:0,  ro:0, off:0,  bl:19,
+    dayDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 27 Mar (Fri) · 28 Mar (Sat) · 29 Mar (Sun) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:43, name:"Sujatha, Sinchu Soman",         role:"SN I", fte:"1.00", pg:4, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:23, d:9,  nt:14, al:0,  ro:1, off:0,  bl:18,
+    dayDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 31 Mar (Tue) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    alPeriods:"none", roDates:"06 Apr (Mon)", offMarkers:"none" },
+
+  { n:44, name:"Thomas, Leema",                 role:"SN I", fte:"1.00", pg:4, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:13, d:4,  nt:9,  al:12, ro:0, off:4,  bl:13,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 22 Mar (Sun) · 23 Mar (Mon)",
+    nightDates:"09 Apr (Thu) · 10 Apr (Fri) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"26 Mar → 06 Apr", roDates:"none", offMarkers:"24 Mar → 25 Mar · 07 Apr → 08 Apr" },
+
+  { n:45, name:"Trillana, Catherine Mae",       role:"SN I", fte:"1.00", pg:4, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:19, d:10, nt:9,  al:3,  ro:2, off:4,  bl:14,
+    dayDates:"15 Mar (Sun) · 18 Mar (Wed) · 19 Mar (Thu) · 20 Mar (Fri) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed)",
+    nightDates:"05 Apr (Sun) · 06 Apr (Mon) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"09 Apr → 11 Apr", roDates:"27 Mar (Fri) · 28 Mar (Sat)", offMarkers:"07 Apr → 08 Apr · 12 Apr → 13 Apr" },
+
+  { n:46, name:"Valdez, Sheia Grazielle",       role:"SN I", fte:"1.00", pg:4, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">SN I</span>', tw:21, d:6,  nt:15, al:0,  ro:3, off:0,  bl:18,
+    dayDates:"24 Mar (Tue) · 25 Mar (Wed) · 29 Mar (Sun) · 01 Apr (Wed) · 02 Apr (Thu) · 03 Apr (Fri)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 17 Mar (Tue) · 21 Mar (Sat) · 06 Apr (Mon) · 07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    alPeriods:"none", roDates:"26 Mar (Thu) · 30 Mar (Mon) · 31 Mar (Tue)", offMarkers:"none" },
+
+  { n:47, name:"Vatumalai, Nanthini",           role:"SN I", fte:"1.00", pg:4, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:22, d:13, nt:9,  al:0,  ro:0, off:0,  bl:20,
+    dayDates:"15 Mar (Sun) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 13 Apr (Mon) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"19 Mar (Thu) · 20 Mar (Fri) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri) · 28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:48, name:"Ybanez, Jay Ann",               role:"SN I", fte:"1.00", pg:4, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">SN I</span>', tw:18, d:9,  nt:9,  al:5,  ro:0, off:2,  bl:17,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 25 Mar (Wed) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    nightDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    alPeriods:"27 Mar → 31 Mar", roDates:"none", offMarkers:"26 Mar (Thu) · 01 Apr (Wed)" },
+
+  { n:49, name:"Alonsagay, Myra",               role:"CA",   fte:"1.00", pg:4, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">CA</span>',   tw:15, d:2,  nt:13, al:12, ro:0, off:4,  bl:11,
+    dayDates:"31 Mar (Tue) · 01 Apr (Wed)",
+    nightDates:"05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    alPeriods:"17 Mar → 28 Mar", roDates:"none", offMarkers:"15 Mar → 16 Mar · 29 Mar → 30 Mar" },
+
+  { n:50, name:"Ferrer, Ana Liza",              role:"CA",   fte:"1.00", pg:4, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">CA</span>',   tw:22, d:13, nt:9,  al:0,  ro:2, off:0,  bl:18,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue) · 28 Mar (Sat) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    nightDates:"07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    alPeriods:"none", roDates:"26 Mar (Thu) · 27 Mar (Fri)", offMarkers:"none" },
+
+  { n:51, name:"Mahinay, Rona Victoria",        role:"CA",   fte:"1.00", pg:4, sec:"Night", secPill:'<span class="pill pill-night">Night</span>', rolePill:'<span class="pill pill-role">CA</span>',   tw:22, d:9,  nt:13, al:0,  ro:2, off:0,  bl:18,
+    dayDates:"07 Apr (Tue) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 19 Mar (Thu) · 20 Mar (Fri) · 21 Mar (Sat) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat)",
+    alPeriods:"none", roDates:"27 Mar (Fri) · 28 Mar (Sat)", offMarkers:"none" },
+
+  { n:52, name:"Moreno, Jane",                  role:"CA",   fte:"1.00", pg:4, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">CA</span>',   tw:7,  d:7,  nt:0,  al:28, ro:0, off:3,  bl:4,
+    dayDates:"17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 21 Mar (Sat) · 23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed)",
+    nightDates:"none", alPeriods:"29 Mar → 25 Apr", roDates:"none", offMarkers:"26 Mar → 28 Mar" },
+
+  { n:53, name:"Salutem, Divina",               role:"CA",   fte:"1.00", pg:5, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">CA</span>',   tw:22, d:22, nt:0,  al:0,  ro:1, off:0,  bl:19,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 17 Mar (Tue) · 20 Mar (Fri) · 21 Mar (Sat) · 22 Mar (Sun) · 25 Mar (Wed) · 26 Mar (Thu) · 27 Mar (Fri) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 07 Apr (Tue) · 08 Apr (Wed) · 12 Apr (Sun) · 13 Apr (Mon) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"none", alPeriods:"none", roDates:"28 Mar (Sat)", offMarkers:"none" },
+
+  { n:54, name:"Tandih, Raicel",                role:"CA",   fte:"1.00", pg:5, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">CA</span>',   tw:21, d:15, nt:6,  al:0,  ro:0, off:0,  bl:21,
+    dayDates:"31 Mar (Tue) · 01 Apr (Wed) · 05 Apr (Sun) · 06 Apr (Mon) · 09 Apr (Thu) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"17 Mar (Tue) · 18 Mar (Wed) · 22 Mar (Sun) · 23 Mar (Mon) · 26 Mar (Thu) · 27 Mar (Fri)",
+    alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:55, name:"Vergel, Carmela Dawn",          role:"CA",   fte:"1.00", pg:5, sec:"Day",   secPill:'<span class="pill pill-day">Day</span>',     rolePill:'<span class="pill pill-role">CA</span>',   tw:16, d:13, nt:3,  al:7,  ro:1, off:2,  bl:16,
+    dayDates:"18 Mar (Wed) · 05 Apr (Sun) · 06 Apr (Mon) · 08 Apr (Wed) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"28 Mar (Sat) · 31 Mar (Tue) · 01 Apr (Wed)",
+    alPeriods:"19 Mar → 25 Mar", roDates:"09 Apr (Thu)", offMarkers:"26 Mar → 27 Mar" },
+
+  { n:56, name:"Alaklabi, Bushra",              role:"WC",   fte:"1.00", pg:5, sec:"Other", secPill:'<span class="pill pill-green">Other</span>',  rolePill:'<span class="pill pill-wc">WC</span>',     tw:13, d:13, nt:0,  al:14, ro:0, off:2,  bl:13,
+    dayDates:"31 Mar (Tue) · 01 Apr (Wed) · 05 Apr (Sun) · 06 Apr (Mon) · 10 Apr (Fri) · 11 Apr (Sat) · 14 Apr (Tue) · 15 Apr (Wed) · 19 Apr (Sun) · 20 Apr (Mon) · 23 Apr (Thu) · 24 Apr (Fri) · 25 Apr (Sat)",
+    nightDates:"none", alPeriods:"15 Mar → 28 Mar", roDates:"none", offMarkers:"29 Mar → 30 Mar" },
+
+  { n:57, name:"Mohammad, Faiza",               role:"WC",   fte:"1.00", pg:5, sec:"Other", secPill:'<span class="pill pill-green">Other</span>',  rolePill:'<span class="pill pill-wc">WC</span>',     tw:25, d:25, nt:0,  al:0,  ro:0, off:0,  bl:17,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"none", alPeriods:"none", roDates:"none", offMarkers:"none" },
+
+  { n:58, name:"Alanazi, Razan",                role:"Defa", fte:"1.00", pg:5, sec:"Other", secPill:'<span class="pill pill-green">Other</span>',  rolePill:'<span class="pill pill-defa">Defa</span>',  tw:15, d:10, nt:5,  al:6,  ro:0, off:2,  bl:19,
+    dayDates:"02 Apr (Thu) · 03 Apr (Fri) · 04 Apr (Sat) · 08 Apr (Wed) · 12 Apr (Sun) · 16 Apr (Thu) · 17 Apr (Fri) · 18 Apr (Sat) · 21 Apr (Tue) · 22 Apr (Wed)",
+    nightDates:"15 Mar (Sun) · 16 Mar (Mon) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue)",
+    alPeriods:"26 Mar → 31 Mar", roDates:"none", offMarkers:"25 Mar (Wed) · 01 Apr (Wed)" },
+
+  { n:59, name:"Alswair, Rabab",                role:"Defa", fte:"1.00", pg:5, sec:"Other", secPill:'<span class="pill pill-green">Other</span>',  rolePill:'<span class="pill pill-defa">Defa</span>',  tw:30, d:30, nt:0,  al:0,  ro:0, off:0,  bl:12,
+    dayDates:"15 Mar (Sun) · 16 Mar (Mon) · 17 Mar (Tue) · 18 Mar (Wed) · 19 Mar (Thu) · 22 Mar (Sun) · 23 Mar (Mon) · 24 Mar (Tue) · 25 Mar (Wed) · 26 Mar (Thu) · 29 Mar (Sun) · 30 Mar (Mon) · 31 Mar (Tue) · 01 Apr (Wed) · 02 Apr (Thu) · 05 Apr (Sun) · 06 Apr (Mon) · 07 Apr (Tue) · 08 Apr (Wed) · 09 Apr (Thu) · 12 Apr (Sun) · 13 Apr (Mon) · 14 Apr (Tue) · 15 Apr (Wed) · 16 Apr (Thu) · 19 Apr (Sun) · 20 Apr (Mon) · 21 Apr (Tue) · 22 Apr (Wed) · 23 Apr (Thu)",
+    nightDates:"none", alPeriods:"none", roDates:"none", offMarkers:"none" }
+];
+
+const dayTag  = '<span style="display:inline-block;background:#e8f0fb;color:#1c6eb0;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;white-space:nowrap">☀ DAY</span>';
+const ngtTag  = '<span style="display:inline-block;background:#eeecfb;color:#4a4b9c;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;white-space:nowrap">🌙 NIGHT</span>';
+const alTag   = '<span style="display:inline-block;background:#fff3d9;color:#bf7b0c;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;white-space:nowrap">📋 AL</span>';
+const roTag   = '<span style="display:inline-block;background:#f0f0f0;color:#5a6b82;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;white-space:nowrap">⭕ RO</span>';
+const offTag  = '<span style="display:inline-block;background:#ffeaea;color:#c0392b;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;white-space:nowrap">⛔ OFF</span>';
+
+function formatDates(str, tag) {
+  if (!str || str === "none") return '<span style="color:#b0bac8;font-size:11px">none</span>';
+  return tag + ' <span style="font-size:11.5px;color:#3a4e62;line-height:1.8">' + str + '</span>';
+}
+
+const tbody = document.getElementById("fullTbody");
+employees.forEach(e => {
+  const mainRow = document.createElement("tr");
+  mainRow.style.cursor = "pointer";
+  mainRow.setAttribute("data-expanded","false");
+  mainRow.innerHTML = `
+    <td style="text-align:center;font-size:14px;color:#8a9bb5;user-select:none" class="toggle-arrow">▶</td>
+    <td style="color:#8a9bb5">${e.n}</td>
+    <td><strong>${e.name}</strong></td>
+    <td>${e.rolePill}</td>
+    <td>${e.fte}</td>
+    <td>${e.pg}</td>
+    <td>${e.secPill}</td>
+    <td><strong>${e.tw}</strong></td>
+    <td class="num-pos">${e.d}</td>
+    <td class="${e.nt > 0 ? 'num-ngt' : 'num-zero'}">${e.nt}</td>
+    <td class="${e.al > 0 ? 'num-al' : 'num-zero'}">${e.al}</td>
+    <td class="${e.ro > 0 ? '' : 'num-zero'}">${e.ro}</td>
+    <td class="${e.off > 0 ? '' : 'num-zero'}">${e.off}</td>
+    <td style="color:#8a9bb5">${e.bl}</td>
+  `;
+
+  const detailRow = document.createElement("tr");
+  detailRow.style.display = "none";
+  detailRow.innerHTML = `<td colspan="14" style="background:#f7f9fd;padding:14px 24px 18px 48px;border-top:none">
+    <div style="display:grid;gap:8px">
+      <div>${formatDates(e.dayDates, dayTag)}</div>
+      <div>${formatDates(e.nightDates, ngtTag)}</div>
+      <div>${formatDates(e.alPeriods, alTag)}</div>
+      <div>${formatDates(e.roDates, roTag)}</div>
+      <div>${formatDates(e.offMarkers, offTag)}</div>
+    </div>
+  </td>`;
+
+  mainRow.addEventListener("click", () => {
+    const expanded = mainRow.getAttribute("data-expanded") === "true";
+    detailRow.style.display = expanded ? "none" : "table-row";
+    mainRow.setAttribute("data-expanded", !expanded);
+    mainRow.querySelector(".toggle-arrow").textContent = expanded ? "▶" : "▼";
+    mainRow.style.background = expanded ? "" : "#f0f5ff";
+  });
+
+  tbody.appendChild(mainRow);
+  tbody.appendChild(detailRow);
+});
+
+function expandAll() {
+  document.querySelectorAll("#fullTbody tr[data-expanded]").forEach(r => {
+    r.setAttribute("data-expanded","true");
+    r.style.background = "#f0f5ff";
+    r.querySelector(".toggle-arrow").textContent = "▼";
+    r.nextElementSibling.style.display = "table-row";
+  });
+}
+function collapseAll() {
+  document.querySelectorAll("#fullTbody tr[data-expanded]").forEach(r => {
+    r.setAttribute("data-expanded","false");
+    r.style.background = "";
+    r.querySelector(".toggle-arrow").textContent = "▶";
+    r.nextElementSibling.style.display = "none";
+  });
+}
+</script>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════  CATEGORY BREAKDOWN  ══════════════════════ -->
+  <div class="section-head">
+    <div class="section-icon" style="background:#e8edf5">📈</div>
+    <h2>Category &amp; Role Breakdown</h2>
+  </div>
+
+  <div class="breakdown-grid">
+    <div class="breakdown-card">
+      <div class="breakdown-head" style="background:var(--navy)">By Section</div>
+      <div class="breakdown-body">
+        <div class="breakdown-row"><span class="br-name">Management / Admin (AHN, CI)</span><span class="br-val">3</span></div>
+        <div class="breakdown-row"><span class="br-name">Day Shift Primary (SN I &amp; CA)</span><span class="br-val">31</span></div>
+        <div class="breakdown-row"><span class="br-name">Night Shift Primary (SN I &amp; CA)</span><span class="br-val">20</span></div>
+        <div class="breakdown-row"><span class="br-name">Other Roles (CLN, WC, Defa)</span><span class="br-val">5</span></div>
+        <div class="breakdown-row" style="font-weight:700; background:#f4f6fb"><span class="br-name">Total</span><span class="br-val">59</span></div>
+      </div>
+    </div>
+
+    <div class="breakdown-card">
+      <div class="breakdown-head" style="background:var(--teal)">By Role / Skill</div>
+      <div class="breakdown-body">
+        <div class="breakdown-row"><span class="br-name"><span class="pill pill-mgmt">AHN</span> — Asst Head Nurse</span><span class="br-val">2</span></div>
+        <div class="breakdown-row"><span class="br-name"><span class="pill pill-mgmt">CI</span> — Charge In-charge</span><span class="br-val">1</span></div>
+        <div class="breakdown-row"><span class="br-name"><span class="pill pill-cln">CLN</span> — Cleaner</span><span class="br-val">1</span></div>
+        <div class="breakdown-row"><span class="br-name"><span class="pill pill-role">SN I</span> — Staff Nurse I</span><span class="br-val">44</span></div>
+        <div class="breakdown-row"><span class="br-name"><span class="pill pill-role">CA</span> — Care Assistant</span><span class="br-val">7</span></div>
+        <div class="breakdown-row"><span class="br-name"><span class="pill pill-wc">WC</span> — Ward Clerk</span><span class="br-val">2</span></div>
+        <div class="breakdown-row"><span class="br-name"><span class="pill pill-defa">Defa</span></span><span class="br-val">2</span></div>
+        <div class="breakdown-row" style="font-weight:700; background:#f4f6fb"><span class="br-name">Total</span><span class="br-val">59</span></div>
+      </div>
+    </div>
+
+    <div class="breakdown-card">
+      <div class="breakdown-head" style="background:#b56b00">Annual Leave Overview</div>
+      <div class="breakdown-body">
+        <div class="breakdown-row"><span class="br-name">Staff with any AL recorded</span><span class="br-val">35</span></div>
+        <div class="breakdown-row"><span class="br-name">Staff with AL ≥ 14 days</span><span class="br-val">9</span></div>
+        <div class="breakdown-row"><span class="br-name">Staff with AL ≥ 20 days</span><span class="br-val">5</span></div>
+        <div class="breakdown-row"><span class="br-name">Highest AL (Abdul Razak)</span><span class="br-val">34 days</span></div>
+        <div class="breakdown-row"><span class="br-name">Staff with no AL recorded</span><span class="br-val">24</span></div>
+      </div>
+    </div>
+
+    <div class="breakdown-card">
+      <div class="breakdown-head" style="background:var(--blue)">Shift Distribution (SN I &amp; CA, 51 staff)</div>
+      <div class="breakdown-body">
+        <div class="breakdown-row"><span class="br-name">Day-primary staff</span><span class="br-val">31</span></div>
+        <div class="breakdown-row"><span class="br-name">Night-primary staff</span><span class="br-val">20</span></div>
+        <div class="breakdown-row"><span class="br-name">Day-only workers (0 night shifts)</span><span class="br-val">11</span></div>
+        <div class="breakdown-row"><span class="br-name">Night-only workers (0 day shifts)</span><span class="br-val">3</span></div>
+        <div class="breakdown-row"><span class="br-name">Mixed shift (both day &amp; night)</span><span class="br-val">37</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════  DATA INTEGRITY NOTE  ══════════════════════ -->
+  <div class="integrity-box">
+    <h3>🔒 Data Integrity Note</h3>
+    <p>This report is a reorganized presentation of the original extracted schedule data. The following principles were strictly followed:</p>
+    <ul>
+      <li>No original schedule data was changed, renamed, or inferred.</li>
+      <li>All 59 employee records from the source PDF extraction were preserved exactly as extracted.</li>
+      <li>Shift counts, leave periods, phone numbers, FTE values, and PDF page references are reproduced verbatim from the source file.</li>
+      <li>The source file itself states: <em>"No schedule data was intentionally changed. Dates and counts below are derived from the visible entries in the source."</em></li>
+      <li>Section assignments (Day / Night / Management / Other) reflect the primary shift type based on day-shift vs. night-shift counts as recorded in the source. Where counts were equal, the employee was placed in the Day Shift section.</li>
+      <li>Source period: <strong>2026-03-15 to 2026-04-25</strong> &nbsp;|&nbsp; Unit: <strong>R – NA – A3</strong> &nbsp;|&nbsp; Total records: <strong>59</strong></li>
+    </ul>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  Schedule Report &nbsp;·&nbsp; Unit R – NA – A3 &nbsp;·&nbsp; Period: 15 March – 25 April 2026 &nbsp;·&nbsp; 59 employee records &nbsp;·&nbsp; Data reorganized for clarity — no values were altered
+</footer>
+
+</body>
+</html>
